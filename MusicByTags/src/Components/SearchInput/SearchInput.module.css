@@ -1,0 +1,30 @@
+.input-box {
+    position: relative;
+}
+
+.input {
+    width: 320px;
+    background-color: var(--extractor-lvl1-color);
+    color: var(--primary-ultralight-color);
+    border-radius: 20px;
+    border: 2px solid var(--primary-color);
+    padding: 20px 20px 20px 50px;
+    font-size: 20px;
+}
+
+.input:focus {
+    outline: none;
+    border: 2px solid var(--primary-light-color);
+}
+
+.label {
+    position: absolute;
+    left: 15px;
+    top: 22px;
+}
+
+.label img {
+    width: 22px;
+    height: 22px;
+    filter: hue-rotate(90deg);
+}

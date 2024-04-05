@@ -1,0 +1,41 @@
+.button {
+    width: 320px;
+    position: relative;
+    background-color: var(--extractor-lvl1-color);
+    color: var(--text-color);
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    padding: 20px 20px 20px 20px;
+    font-size: 20px;
+}
+
+.button:hover {
+    filter: brightness(90%);
+}
+
+.button:active {
+    filter: brightness(80%);
+}
+
+.active {
+    background-color: var(--extractor-lvl2-color);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.active img {
+    filter: hue-rotate(90deg);
+}
+
+.input:focus {
+    outline: none;
+    border: 2px solid var(--border-light-color);
+}
+
+.img {
+    position: absolute;
+    left: 15px;
+    top: 20px;
+    width: 22px;
+    height: 22px;
+}
