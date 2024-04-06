@@ -1,0 +1,77 @@
+.track {
+    display: grid;
+    grid-template-columns: 20px 70px 300px 250px 100px 50px;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background: none;
+    border: none;
+}
+
+.play-icon {
+    display: none;
+    width: 25px;
+    height: 18px;
+    padding-right: 10px;
+}
+
+.track:hover {
+    background-color: var(--primary-10-color);
+}
+
+.track:hover .author {
+    color: var(--text-color);
+}
+
+.track:hover .id {
+    display: none;
+}
+
+.track:hover .play-icon {
+    display: block;
+}
+
+.track:active {
+    background-color: var(--primary-20-color);
+}
+
+.id {
+    color: var(--text-secondary-color);
+}
+
+.img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+}
+
+.name-author {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: start;
+    gap: 3px;
+}
+
+.name {
+    color: var(--text-color);
+}
+
+.author {
+    color: var(--text-secondary-color);
+}
+
+.album {
+    color: var(--text-secondary-color);
+}
+
+.tags {
+    width: 100%;
+    height: 30px;
+    background-color: var(--text-secondary-color);
+}
+
+.time {
+    color: var(--text-secondary-color);
+}

@@ -1,15 +1,14 @@
 import axios from "axios";
 import { SearchFromSpotify } from "../interfaces/searchData.interface";
 import { TOKEN } from "./getTOKEN";
+import { getTracksById } from "./getTracks";
 
-function reworkData(data: SearchFromSpotify | undefined): string[] {
-    const tracks: string[] = [];
+async function reworkData(data: SearchFromSpotify | undefined) {
     if (data) {
-        for (const item of data.tracks.items) {
-            tracks.push(item.id);
-        }
+        const tracks = await getTracksById(data.tracks.items.map(i => i.id));
+        return tracks;
     }
-    return tracks;
+    return [];
 }
 
 async function getPage(url: string): Promise<SearchFromSpotify | undefined> {
@@ -42,8 +41,8 @@ async function getPage(url: string): Promise<SearchFromSpotify | undefined> {
 
 export async function searchAPI(searchString: string) {
     try {
-        const url = `https://api.spotify.com/v1/search?q=${searchString}&type=track&limit=50&offset=25`;
-        return reworkData(await getPage(url));
+        const url = `https://api.spotify.com/v1/search?q=${searchString}&type=track&limit=50`;
+        return await reworkData(await getPage(url));
     } catch (error) {
         console.error(error);
     }

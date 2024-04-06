@@ -4,7 +4,7 @@ import SearchInput from "../../Components/SearchInput/SearchInput";
 import styles from "./TotalSearch.module.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store/store";
-import { getTracks, playlistActions } from "../../Store/playlist.slice";
+import { getTracks } from "../../Store/searchlist.slice";
 import { FormEvent } from "react";
 import TrackList from "../../Components/TrackList/TrackList";
 import { getTOKEN } from "../../workWithAPI/getTOKEN";
@@ -16,7 +16,6 @@ function TotalSearch() {
     getTOKEN();
 
     const changePage = () => {
-        dispatch(playlistActions.clearState());
         naviaget("/playlist");
     };
 

@@ -1,15 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import playlistSlice, { PLAYLIST_PERSISTENT_STATE } from "./playlist.slice";
 import { saveState } from "./storage";
+import currentTrackSlice, { CURRENT_TRACK_PERSISTENT_STATE } from "./currentTrack.slice";
+import searchlistSlice, { SEARCHLIST_PERSISTENT_STATE } from "./searchlist.slice";
 
 export const store = configureStore({
     reducer: {
-        playlist: playlistSlice
+        searchlist: searchlistSlice,
+        currentTrack: currentTrackSlice
     }
 });
 
 store.subscribe(() => {
-    saveState(PLAYLIST_PERSISTENT_STATE, { playlist: store.getState().playlist.tracks });
+    saveState(SEARCHLIST_PERSISTENT_STATE, { playlist: store.getState().searchlist.tracks });
+    saveState(CURRENT_TRACK_PERSISTENT_STATE, { ...store.getState().currentTrack });
 });
 
 export type RootState = ReturnType<typeof store.getState>;

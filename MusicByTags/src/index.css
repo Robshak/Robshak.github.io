@@ -7,13 +7,17 @@
   --extractor-lvl1-color: rgba(255, 255, 255, 0.03);
   --extractor-lvl2-color: rgba(255, 255, 255, 0.07);
   --text-color: #fff;
+  --text-secondary-color: #a7a7a7;
   --primary-dark-color: #EF5DA8;
   --primary-color: #F178B6;
+  --primary-10-color: rgba(241, 120, 182, 0.1);
+  --primary-20-color: rgba(241, 120, 182, 0.2);
   --primary-light-color: #FF98CA;
   --primary-ultralight-color: #FCDDEC;
   --border-color: #3a3c4b;
   --border-light-color: #454758;
   --border-dark-color: #2d2f3a;
+  --font: "Roboto", sans-serif;
 }
 
 body {
@@ -26,6 +30,7 @@ body {
   max-width: 1200px;
   margin: 0px auto;
   margin-top: 60px;
+  font-family: var(--font);
 }
 
 .app {

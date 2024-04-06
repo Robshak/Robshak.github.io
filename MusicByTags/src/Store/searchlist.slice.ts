@@ -2,26 +2,27 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { loadState } from "./storage";
 import { searchAPI } from "../workWithAPI/searchAPI";
+import { Track } from "../interfaces/Track.interface";
 
-export const PLAYLIST_PERSISTENT_STATE = "playlist";
+export const SEARCHLIST_PERSISTENT_STATE = "searchlist";
 
-export interface PlaylistPersistentState {
-    playlist: string[] | null;
+export interface SearchlistPersistentState {
+    playlist: (Track | undefined)[] | null;
 }
 
-export interface PlaylistState {
-    tracks: string[] | null;
+export interface SearchlistState {
+    tracks: (Track | undefined)[] | null;
     errorMessage?: string;
 }
 
-const initialState: PlaylistState = {
-    tracks: loadState<PlaylistPersistentState>(PLAYLIST_PERSISTENT_STATE)?.playlist ?? null
+const initialState: SearchlistState = {
+    tracks: loadState<SearchlistPersistentState>(SEARCHLIST_PERSISTENT_STATE)?.playlist ?? null
 };
 
-export const getTracks = createAsyncThunk("playlist/tracks",
+export const getTracks = createAsyncThunk("searchlist/tracks",
     async (params: { searchString: string }) => {
         try {
-            const data: string[] | undefined = await searchAPI(params.searchString);
+            const data: (Track | undefined)[] | undefined = await searchAPI(params.searchString);
             return data;
         } catch (e) {
             if (e instanceof AxiosError) {
@@ -31,8 +32,8 @@ export const getTracks = createAsyncThunk("playlist/tracks",
     }
 );
 
-export const playlistSlice = createSlice({
-    name: "playlist",
+export const searchlistSlice = createSlice({
+    name: "searchlist",
     initialState,
     reducers: {
         clearState: (state) => {
@@ -52,5 +53,5 @@ export const playlistSlice = createSlice({
     }
 });
 
-export default playlistSlice.reducer;
-export const playlistActions = playlistSlice.actions;
+export default searchlistSlice.reducer;
+export const searchlistActions = searchlistSlice.actions;
