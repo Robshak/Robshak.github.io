@@ -1,7 +1,7 @@
 .player {
     bottom: 0px;
     left: 0px;
-    position: fixed;
+    position: absolute;
     width: 100vw;
     background-color: black;
     display: flex;
@@ -133,49 +133,86 @@
 }
 
 .border-line {
-    position: relative;
-    display: flex;
-    align-items: center;
+    -webkit-appearance: none;
+    appearance: none;
+
     width: 45vw;
     height: 6px;
     border-radius: 10px;
-    background-color: var(--primary-20-color);
     cursor: pointer;
 }
 
-.line {
-    height: 100%;
+.border-line::-webkit-slider-runnable-track {
     border-radius: 10px;
-    background-color: var(--text-color);
 }
 
-.point {
-    pointer-events: none;
-    position: absolute;
-    display: none;
-    width: 10px;
-    height: 10px;
-    background-color: var(--text-color);
+.border-line::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    height: 0px;
+    width: 0px;
+    background-color: #fff;
     border-radius: 90%;
+    border: none;
 }
 
-.border-line:hover .point {
-    display: block;
-}
+.border-line:hover::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
 
-.point:active {
-    display: block;
-}
-
-.kill-point {
-    display: none !important;
-}
-
-.border-line:hover .line {
-    background-color: var(--primary-color);
+    height: 15px !important;
+    width: 15px !important;
+    background-color: #fff;
+    border-radius: 90%;
+    border: none;
 }
 
 .current-position,
 .track-len {
     color: var(--text-secondary-color);
+}
+
+.right-part {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.volume-button,
+.open-track {
+    border: none;
+    background: none;
+}
+
+.volume-button img,
+.open-track img {
+    width: 30px;
+    height: 30px;
+}
+
+.volume-button:hover img,
+.open-track:hover img {
+    filter: brightness(90%);
+}
+
+.volume-button:active img,
+.open-track:active img {
+    filter: brightness(80%);
+}
+
+.audio-lvl0 img {
+    content: url("/audioLel0Icon.svg");
+}
+
+.audio-lvl1 img {
+    content: url("/audioLel1Icon.svg");
+}
+
+.audio-lvl2 img {
+    content: url("/audioLel2Icon.svg");
+}
+
+.audio-lvl3 img {
+    content: url("/audioLel3Icon.svg");
 }

@@ -54,7 +54,7 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
 
 export async function getTracksById(trackIds: string[]) {
     let res = await Promise.all(trackIds.map(i => getTrack(i)));
-    let cnt = 0;
+    let cnt = -1;
     res = res.map(track => {
         cnt++;
         if (track) {

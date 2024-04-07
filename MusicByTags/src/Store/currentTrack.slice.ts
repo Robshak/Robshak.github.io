@@ -6,6 +6,7 @@ export const CURRENT_TRACK_PERSISTENT_STATE = "current-track";
 
 export interface CurrentTrack {
     url: string;
+    number: number;
     name: string;
     artists: string;
     img: string;
@@ -14,26 +15,20 @@ export interface CurrentTrack {
 
 export interface CurrentTrackPersistentState {
     track: CurrentTrack;
+    len_s: number | null;
     active: boolean;
-    volume: number;
-    currentPosition: number;
-    len_ms: number | null;
 }
 
-export interface CurrentTracktState {
+export interface CurrentTrackState {
     track: CurrentTrack | undefined;
+    len_s: number | null;
     active: boolean;
-    volume: number;
-    currentPosition: number;
-    len_ms: number | null;
 }
 
-const initialState: CurrentTracktState = {
+const initialState: CurrentTrackState = {
     track: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.track ?? undefined,
-    active: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.active ?? false,
-    volume: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.volume ?? 0.1,
-    currentPosition: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.currentPosition ?? 0,
-    len_ms: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.len_ms ?? null
+    len_s: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.len_s ?? null,
+    active: false
 };
 
 export const currentTrackSlice = createSlice({
@@ -41,31 +36,30 @@ export const currentTrackSlice = createSlice({
     initialState,
     reducers: {
         setTrack: (state, action: PayloadAction<Track>) => {
+            if (state.track?.number) {
+                if (state.track.number == action.payload.number) {
+                    state.active = !state.active;
+                    return;
+                }
+            }
             if (action.payload.previewUrl) {
                 state.track = {
                     url: action.payload.previewUrl,
+                    number: action.payload.number,
                     name: action.payload.name,
                     artists: action.payload.artists,
                     img: action.payload.img,
                     tags: action.payload.tags
                 };
-                state.len_ms = action.payload.durationMs;
-                state.currentPosition = 0;
+                state.len_s = Math.ceil(action.payload.durationMs / 1000);
                 state.active = true;
             }
         },
-        playPauseTrack: (state) => {
+        setActive: (state, action: PayloadAction<boolean>) => {
+            state.active = action.payload;
+        },
+        toggleActive: (state) => {
             state.active = !state.active;
-        },
-        setVolume: (state, action: PayloadAction<number>) => {
-            state.volume = action.payload;
-        },
-        setPosition: (state, action: PayloadAction<number>) => {
-            state.currentPosition = action.payload;
-        },
-        loadTrack: (state) => {
-            state.track = loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.track ?? undefined;
-            console.log(state);
         }
     }
 });
