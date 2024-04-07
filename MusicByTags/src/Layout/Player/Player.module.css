@@ -1,17 +1,20 @@
 .player {
     bottom: 0px;
     left: 0px;
-    position: absolute;
-    width: 100vw;
+    position: fixed;
     background-color: black;
     display: flex;
+    width: 100vw;
     justify-content: space-between;
     height: 100px;
-    padding: 10px;
+    padding: 10px 20px 10px 20px;
 }
 
 .left-part {
-    display: flex;
+    min-width: 180px;
+    width: 20%;
+    display: grid;
+    grid-template-columns: 70px calc(100% - 70px - 10px);
     gap: 10px;
 }
 
@@ -21,6 +24,7 @@
 }
 
 .track-info-text {
+    width: 100%;
     margin-top: 15px;
     display: flex;
     flex-direction: column;
@@ -28,14 +32,21 @@
 }
 
 .track-name {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
     color: var(--text-color);
 }
 
 .track-author {
+    white-space: nowrap;
+    overflow: hidden;
     color: var(--text-secondary-color);
 }
 
 .center-part {
+    max-width: 700px;
+    width: 40%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -46,6 +57,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    margin-left: 76px;
 }
 
 .center-button {
@@ -127,6 +139,7 @@
 }
 
 .timeline {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -136,8 +149,8 @@
     -webkit-appearance: none;
     appearance: none;
 
-    width: 45vw;
-    height: 6px;
+    width: 100%;
+    height: 5px;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -170,13 +183,22 @@
 
 .current-position,
 .track-len {
+    /* width: 100%; */
+    text-wrap: nowrap;
     color: var(--text-secondary-color);
 }
 
-.right-part {
+.right-part,
+.volume-block {
+    min-width: 180px;
+    width: 20%;
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.volume-block {
+    flex-grow: 1;
 }
 
 .volume-button,
@@ -215,4 +237,41 @@
 
 .audio-lvl3 img {
     content: url("/audioLel3Icon.svg");
+}
+
+.volume-line {
+    -webkit-appearance: none;
+    appearance: none;
+
+    flex-grow: 1;
+    width: 100%;
+    height: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.volume-line::-webkit-slider-runnable-track {
+    border-radius: 10px;
+}
+
+.volume-line::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    height: 0px;
+    width: 0px;
+    background-color: #fff;
+    border-radius: 90%;
+    border: none;
+}
+
+.volume-block:hover .volume-line::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    height: 15px !important;
+    width: 15px !important;
+    background-color: #fff;
+    border-radius: 90%;
+    border: none;
 }

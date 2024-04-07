@@ -1,20 +1,45 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Track } from "../../interfaces/Track.interface";
 import styles from "./Track.module.css";
-import { AppDispatch } from "../../Store/store";
+import { AppDispatch, RootState } from "../../Store/store";
 import { currentTrackActions } from "../../Store/currentTrack.slice";
+import { activeManagerActions } from "../../Store/activeManager.slice";
+import cn from "classnames";
 
-function TrackItem({ props }: { props: Track }) {
+function TrackItem({ props, playlist }: { props: Track, playlist: (Track | undefined)[] | null }) {
     const dispatch = useDispatch<AppDispatch>();
+    const currentTrack = useSelector((s: RootState) => s.currentTrack);
+    const activeManager = useSelector((s: RootState) => s.activeManager);
 
     const playTrack = () => {
-        dispatch(currentTrackActions.setTrack(props));
+        if (currentTrack.track?.url != props.previewUrl) {
+            dispatch(currentTrackActions.setTrack({
+                track: props,
+                playlist
+            }));
+            dispatch(activeManagerActions.setActive(true));
+        }
+        else {
+            dispatch(activeManagerActions.toggleActive());
+        }
     };
 
-    return <button onClick={playTrack} className={styles["track"]}>
+    const setAnimation = currentTrack.track?.url == props.previewUrl && activeManager.active;
+
+    return <button onClick={playTrack} className={cn(styles["track"], {
+        [styles["active-track"]]: currentTrack.track?.url == props.previewUrl
+    })}>
         <div className={styles["start-block"]}>
-            <img className={styles["play-icon"]} src="/playIcon.svg" alt="" />
-            <div className={styles["id"]}>{props.number}</div>
+            {setAnimation && <div className={styles["animation"]}>
+                <div className={styles["stroke"]}></div>
+                <div className={styles["stroke"]}></div>
+                <div className={styles["stroke"]}></div>
+                <div className={styles["stroke"]}></div>
+            </div>}
+            {!setAnimation && <>
+                <img className={styles["play-icon"]} src="/playIcon.svg" alt="" />
+                <div className={styles["id"]}>{props.number + 1}</div>
+            </>}
         </div>
         <img className={styles["img"]} src={props.img} alt="" />
         <div className={styles["name-author"]}>
@@ -30,7 +55,6 @@ function TrackItem({ props }: { props: Track }) {
         <div className={styles["time"]}>
             {props.durationText}
         </div>
-        {/* {props.previewUrl && <audio controls src={props.previewUrl}></audio>} */}
     </button>;
 }
 

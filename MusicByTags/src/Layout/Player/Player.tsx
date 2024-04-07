@@ -6,6 +6,7 @@ import cn from "classnames";
 import { durationToText } from "../../workWithAPI/getTracks";
 import { Outlet } from "react-router-dom";
 import { volumeManagerActions } from "../../Store/volumeManage.slice";
+import { activeManagerActions } from "../../Store/activeManager.slice";
 import { currentTrackActions } from "../../Store/currentTrack.slice";
 
 const PRIMARY_COLOR = "F178B6";
@@ -14,10 +15,13 @@ const WHITE_COLOR = "fff";
 function Player() {
     const dispatch = useDispatch<AppDispatch>();
     const [progressBarColor, setProgressBarColor] = useState<string>(WHITE_COLOR);
+    const [volumeBarColor, setVolumeBarColor] = useState<string>(WHITE_COLOR);
     const [currentPosition, setCurrentPosition] = useState(0);
     const [needUpdateProgressBar, setNeedUpdateProgressBar] = useState<boolean>(true);
+    const [cycleState, setCycleState] = useState<boolean>(false);
     const currentTrack = useSelector((s: RootState) => s.currentTrack);
     const volumeManager = useSelector((s: RootState) => s.volumeManager);
+    const activeManager = useSelector((s: RootState) => s.activeManager);
 
     const player = useRef<HTMLAudioElement>(null);
 
@@ -25,14 +29,6 @@ function Player() {
     useEffect(() => {
         if (currentTrack.track && player.current) {
             player.current.src = currentTrack.track.url;
-            player.current.loop = false;
-            player.current.currentTime = currentPosition / 100;
-            if (player.current && currentTrack.active) {
-                player.current.play();
-            }
-            else if (player.current) {
-                player.current.pause();
-            }
         }
     }, [currentTrack, player]);
 
@@ -42,8 +38,17 @@ function Player() {
         }
     }, [volumeManager.volume, player]);
 
+    useEffect(() => {
+        if (player.current && activeManager.active) {
+            player.current.play();
+        }
+        else if (player.current) {
+            player.current.pause();
+        }
+    });
+
     const playTrack = () => {
-        dispatch(currentTrackActions.toggleActive());
+        dispatch(activeManagerActions.toggleActive());
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -86,6 +91,7 @@ function Player() {
     const onCycle = () => {
         if (player.current) {
             player.current.loop = !player.current.loop;
+            setCycleState(player.current.loop);
         }
     };
 
@@ -101,11 +107,33 @@ function Player() {
         }
     };
 
+    const volumeBarHover = () => {
+        setVolumeBarColor(PRIMARY_COLOR);
+    };
+
+    const volumeBarUnhover = () => {
+        setVolumeBarColor(WHITE_COLOR);
+    };
+
     const goNext = () => {
-        dispatch(currentTrackActions.setActive(false));
+        dispatch(currentTrackActions.nextTrack());
+        // dispatch(activeManagerActions.setActive(false));
+    };
+
+    const goPrev = () => {
+        if (currentPosition > 200) {
+            if (player.current) {
+                player.current.currentTime = 0;
+            }
+            setCurrentPosition(0);
+        }
+        else {
+            dispatch(currentTrackActions.prevTrack());
+        }
     };
 
     const progressBarToProcent = currentPosition / (currentTrack.len_s ? currentTrack.len_s : currentPosition);
+    const volumeBarToProcent = volumeManager.volume * 100;
 
     return <>
         <audio src={currentTrack.track?.url} ref={player} onTimeUpdate={updateProgressBar}
@@ -122,18 +150,18 @@ function Player() {
             </div>
             <div className={styles["center-part"]}>
                 <div className={styles["center-buttons"]}>
-                    <button className={cn(styles["prev"], styles["center-button"])}>
+                    <button onClick={goPrev} className={cn(styles["prev"], styles["center-button"])}>
                         <img src="/nextPrevIcon.svg" alt="" />
                     </button>
                     <button onClick={playTrack} className={cn(styles["play-pause"], styles["center-button"])}>
-                        {!currentTrack.active && <img src="/footerPlayIcon.svg" alt="" />}
-                        {currentTrack.active && <img src="/pauseIcon.svg" alt="" />}
+                        {!activeManager.active && <img src="/footerPlayIcon.svg" alt="" />}
+                        {activeManager.active && <img src="/pauseIcon.svg" alt="" />}
                     </button>
-                    <button className={cn(styles["next"], styles["center-button"])}>
+                    <button onClick={goNext} className={cn(styles["next"], styles["center-button"])}>
                         <img src="/nextPrevIcon.svg" alt="" />
                     </button>
                     <button onClick={onCycle} className={cn(styles["cycle"], styles["center-button"], {
-                        [styles["active-cycle"]]: player.current?.loop
+                        [styles["active-cycle"]]: cycleState
                     })}>
                         <img src="/loop.svg" alt="" />
                     </button>
@@ -149,16 +177,20 @@ function Player() {
                 </div>
             </div>
             <div className={styles["right-part"]}>
-                <button onClick={toggleMute} className={cn(styles["volume-button"], {
-                    [styles["audio-lvl0"]]: volumeManager.volume == 0,
-                    [styles["audio-lvl1"]]: 0 < volumeManager.volume && volumeManager.volume < 0.33,
-                    [styles["audio-lvl2"]]: 0.33 <= volumeManager.volume && volumeManager.volume < 0.66,
-                    [styles["audio-lvl3"]]: 0.66 <= volumeManager.volume && volumeManager.volume
-                })}>
-                    <img src="" alt="" />
-                </button>
-                <input type="range" className={styles["volume-line"]}
-                    min={0} max={100} value={volumeManager.volume * 100} onChange={changeVolume} />
+                <div className={styles["volume-block"]}
+                    onMouseOver={volumeBarHover} onMouseOut={volumeBarUnhover}>
+                    <button onClick={toggleMute} className={cn(styles["volume-button"], {
+                        [styles["audio-lvl0"]]: volumeManager.volume == 0,
+                        [styles["audio-lvl1"]]: 0 < volumeManager.volume && volumeManager.volume < 0.33,
+                        [styles["audio-lvl2"]]: 0.33 <= volumeManager.volume && volumeManager.volume < 0.66,
+                        [styles["audio-lvl3"]]: 0.66 <= volumeManager.volume && volumeManager.volume
+                    })}>
+                        <img src="" alt="" />
+                    </button>
+                    <input type="range" className={styles["volume-line"]}
+                        min={0} max={100} value={volumeManager.volume * 100} onChange={changeVolume}
+                        style={{ background: `linear-gradient(to right, #${volumeBarColor} ${volumeBarToProcent}%, #301322 ${volumeBarToProcent}%)` }} />
+                </div>
                 <button className={styles["open-track"]}>
                     <img src="/openTrackInfoIcon.svg" alt="open track info" />
                 </button>

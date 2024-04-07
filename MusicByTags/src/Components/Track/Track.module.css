@@ -7,6 +7,12 @@
     border-radius: 15px;
     background: none;
     border: none;
+    cursor: auto;
+}
+
+.active-track .id,
+.active-track .name {
+    color: var(--primary-color);
 }
 
 .play-icon {
@@ -74,4 +80,52 @@
 
 .time {
     color: var(--text-secondary-color);
+}
+
+.track:hover .animation {
+    width: 20px;
+    height: 20px;
+    content: url("/trackPouseHover.svg");
+}
+
+.animation {
+    height: 25px;
+    width: calc(2px * 3 + 2px * 4);
+    display: flex;
+    align-items: end;
+    gap: 2px;
+}
+
+.animation .stroke {
+    background-color: var(--primary-color);
+    height: 90%;
+    width: 100%;
+    border: none;
+    animation: animate var(--animation-speed) linear infinite;
+}
+
+@keyframes animate {
+    50% {
+        height: 5%;
+    }
+
+    100% {
+        height: 100%;
+    }
+}
+
+.stroke:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.stroke:nth-child(2) {
+    animation-delay: calc(var(--animation-speed) / 4);
+}
+
+.stroke:nth-child(3) {
+    animation-delay: calc(var(--animation-speed) / 4 * 2);
+}
+
+.stroke:nth-child(4) {
+    animation-delay: calc(var(--animation-speed) / 4 * 3);
 }

@@ -9,7 +9,7 @@ function TrackList() {
     return <div className={styles["track-list"]}>
         {tracks?.map(i => {
             if (i) {
-                return <TrackItem key={i.id} props={i}></TrackItem>;
+                return <TrackItem key={i.id} props={i} playlist={tracks}></TrackItem>;
             }
         })}
     </div>;
