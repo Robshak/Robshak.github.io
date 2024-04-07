@@ -86,6 +86,11 @@
     transform: rotate(180deg);
 }
 
+.cycle {
+    padding: 7px 14px;
+    border-radius: 10px;
+}
+
 .cycle img {
     width: 27px;
     height: 25px;
@@ -109,6 +114,18 @@
     filter: brightness(85%);
 }
 
+.active-cycle {
+    background-color: var(--primary-20-color);
+}
+
+.active-cycle img {
+    content: url("/loopHover.svg");
+}
+
+.active-cycle:hover {
+    filter: brightness(90%);
+}
+
 .timeline {
     display: flex;
     align-items: center;
@@ -120,19 +137,20 @@
     display: flex;
     align-items: center;
     width: 45vw;
-    height: 5px;
+    height: 6px;
+    border-radius: 10px;
     background-color: var(--primary-20-color);
     cursor: pointer;
 }
 
 .line {
     height: 100%;
-    /* width: 10%; */
+    border-radius: 10px;
     background-color: var(--text-color);
 }
 
 .point {
-    /* pointer-events: none; */
+    pointer-events: none;
     position: absolute;
     display: none;
     width: 10px;

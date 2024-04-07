@@ -27,7 +27,7 @@ function Player() {
             }
 
             player.currentTime = currentTrack.currentPosition;
-            player.loop = currentTrack.cycle;
+            player.loop = false;
         }
     }, [currentTrack, player]);
 
@@ -50,67 +50,14 @@ function Player() {
         const mouseX = e.clientX;
         const len = document.getElementById("border-line")?.offsetWidth;
         if (currentTrack.len_ms && len) {
-            const newValue = (mouseX - (mouseX - elementX)) / len * 100;
-            // console.log(currentTrack.len_ms / 100000 * newValue);
+            const newValue = (mouseX - (mouseX - elementX)) / len * 100 - 1;
             player.currentTime = currentTrack.len_ms / 100000 * newValue;
         }
     };
 
-    function dragElement(point: HTMLElement | null) {
-        if (!point) {
-            return;
-        }
-        let mousePos = 0;
-        point.onmousedown = dragMouseDown;
-        const len = document.getElementById("border-line")?.offsetWidth;
-        const distLeft = document.getElementById("border-line")?.offsetLeft;
-        let minima = 0;
-        let maxima = 0;
-        if (distLeft) {
-            minima = distLeft;
-        }
-        if (len) {
-            maxima = minima + len;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function dragMouseDown(e: any) {
-            e = e || window.event;
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            mousePos = e.clientX;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        function elementDrag(e: any) {
-            e = e || window.event;
-            e.preventDefault();
-            mousePos = e.clientX;
-            if (point) {
-                let newValue = mousePos;
-                newValue = Math.min(newValue, maxima);
-                newValue = Math.max(newValue, minima);
-                point.style.left = String(newValue) + "px";
-
-                newValue -= minima;
-
-                if (len && currentTrack.len_ms) {
-                    player.currentTime = newValue / len * currentTrack.len_ms / 1000;
-                }
-            }
-        }
-
-        function closeDragElement() {
-            // stop moving when mouse button is released:
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-
-    dragElement(document.getElementById("point"));
+    const onCycle = () => {
+        player.loop = !player.loop;
+    };
 
     return <>
         <Outlet></Outlet>
@@ -135,7 +82,9 @@ function Player() {
                     <button className={cn(styles["next"], styles["center-button"])}>
                         <img src="/nextPrevIcon.svg" alt="" />
                     </button>
-                    <button className={cn(styles["cycle"], styles["center-button"])}>
+                    <button onClick={onCycle} className={cn(styles["cycle"], styles["center-button"], {
+                        [styles["active-cycle"]]: player.loop
+                    })}>
                         <img src="/loop.svg" alt="" />
                     </button>
                 </div>

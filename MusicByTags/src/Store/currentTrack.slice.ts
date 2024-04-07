@@ -18,7 +18,6 @@ export interface CurrentTrackPersistentState {
     volume: number;
     currentPosition: number;
     len_ms: number | null;
-    cycle: boolean;
 }
 
 export interface CurrentTracktState {
@@ -27,7 +26,6 @@ export interface CurrentTracktState {
     volume: number;
     currentPosition: number;
     len_ms: number | null;
-    cycle: boolean;
 }
 
 const initialState: CurrentTracktState = {
@@ -35,8 +33,7 @@ const initialState: CurrentTracktState = {
     active: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.active ?? false,
     volume: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.volume ?? 0.1,
     currentPosition: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.currentPosition ?? 0,
-    len_ms: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.len_ms ?? null,
-    cycle: false
+    len_ms: loadState<CurrentTrackPersistentState>(CURRENT_TRACK_PERSISTENT_STATE)?.len_ms ?? null
 };
 
 export const currentTrackSlice = createSlice({
@@ -62,9 +59,6 @@ export const currentTrackSlice = createSlice({
         },
         setVolume: (state, action: PayloadAction<number>) => {
             state.volume = action.payload;
-        },
-        changeCycle: (state) => {
-            state.cycle = !state.cycle;
         },
         setPosition: (state, action: PayloadAction<number>) => {
             state.currentPosition = action.payload;
