@@ -4,20 +4,19 @@ import { RootState } from "../../Store/store";
 import TrackItem from "../Track/Track";
 import { Reorder, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Tag } from "../../interfaces/tag.interface";
+import { CMP } from "../../Store/Lists.slice";
 
-function TrackList() {
-    const { tracks } = useSelector((s: RootState) => s.searchlist);
-    const [localTracks, setLocalTrack] = useState((tracks ?? []));
+function TrackList({ tags }: { tags: Tag[] }) {
+    const { lists } = useSelector((s: RootState) => s.lists);
+    const [localTracks, setLocalTrack] = useState((lists.find(l => CMP(l.tags, tags))?.tracks ?? []));
+    // console.log(localTracks);
 
     useEffect(() => {
-        if (tracks) {
-            setLocalTrack(tracks);
+        if (lists) {
+            setLocalTrack(lists.find(l => CMP(l.tags, tags))?.tracks ?? []);
         }
-    }, [tracks]);
-
-    if (!tracks) {
-        return <></>;
-    }
+    }, [lists, tags]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handlePan = (e: any) => {
@@ -38,7 +37,7 @@ function TrackList() {
             {localTracks?.map((track, index) => {
                 if (track) {
                     return <TrackItem key={track.id} track={track} index={index}
-                        playlist={tracks}></TrackItem>;
+                        tags={tags}></TrackItem>;
                 }
                 else {
                     return <></>;

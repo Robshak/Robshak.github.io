@@ -1,9 +1,10 @@
 import { Track } from "../../interfaces/Track.interface";
+import { Tag } from "../../interfaces/tag.interface";
 
 
 export interface TrackItemProps {
     index: number;
     className?: string;
     track: Track;
-    playlist: (Track | undefined)[] | null
+    tags: Tag[];
 }

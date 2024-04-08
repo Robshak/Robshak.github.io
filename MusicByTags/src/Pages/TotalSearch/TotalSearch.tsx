@@ -4,10 +4,14 @@ import SearchInput from "../../Components/SearchInput/SearchInput";
 import styles from "./TotalSearch.module.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store/store";
-import { getTracks } from "../../Store/searchlist.slice";
+import { ListsActions } from "../../Store/Lists.slice";
 import { FormEvent } from "react";
 import TrackList from "../../Components/TrackList/TrackList";
 import { getTOKEN } from "../../workWithAPI/getTOKEN";
+import { Track } from "../../interfaces/Track.interface";
+import { AxiosError } from "axios";
+import { searchAPI } from "../../workWithAPI/searchAPI";
+import { List } from "../../interfaces/list.interface";
 
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,8 +23,31 @@ function TotalSearch() {
         naviaget("/playlist");
     };
 
+    const createSearch = async (params: { searchString: string }) => {
+        try {
+            const data: (Track | undefined)[] | undefined = await searchAPI(params.searchString);
+            if (data) {
+                data?.filter(track => track != undefined);
+            }
+            return data;
+        } catch (e) {
+            if (e instanceof AxiosError) {
+                throw new Error(e.response?.data.message);
+            }
+        }
+    };
+
     const onSearch = async (e: FormEvent<HTMLInputElement>) => {
-        dispatch(getTracks({ searchString: e.currentTarget.value }));
+        const data = await createSearch({ searchString: e.currentTarget.value });
+        if (!data) {
+            return;
+        }
+        const list: List = {
+            tracks: data as Track[],
+            tags: []
+        };
+        // console.log(list);
+        dispatch(ListsActions.pushList(list));
     };
 
     return (
@@ -31,7 +58,7 @@ function TotalSearch() {
                     autoFocus onChange={onSearch}></SearchInput>
                 <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Button</MenuButton>
             </div>
-            <TrackList></TrackList>
+            <TrackList tags={[]}></TrackList>
         </div>
     );
 }

@@ -6,8 +6,9 @@ import { activeManagerActions } from "../../Store/activeManager.slice";
 import cn from "classnames";
 import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
+import { ListsActions } from "../../Store/Lists.slice";
 
-function TrackItem({ track, playlist, className, index }: TrackItemProps) {
+function TrackItem({ track, tags, className, index }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
     const currentTrack = useSelector((s: RootState) => s.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
@@ -16,7 +17,7 @@ function TrackItem({ track, playlist, className, index }: TrackItemProps) {
         if (currentTrack.track?.url != track.previewUrl) {
             dispatch(currentTrackActions.setTrack({
                 track: track,
-                playlist
+                listTags: tags
             }));
             dispatch(activeManagerActions.setActive(true));
         }
@@ -26,8 +27,8 @@ function TrackItem({ track, playlist, className, index }: TrackItemProps) {
     };
 
     const reworkList = () => {
-        console.log("here");
-        dispatch(currentTrackActions.moveTrack({ oldId: track.number, newId: index }));
+        // console.log(track.number, index);
+        dispatch(ListsActions.moveTrack({ oldId: track.number, newId: index, tags }));
     };
 
     const setAnimation = currentTrack.track?.url == track.previewUrl && activeManager.active;

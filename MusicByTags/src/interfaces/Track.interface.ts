@@ -1,3 +1,5 @@
+import { Tag } from "./tag.interface";
+
 export interface Track {
     id: string
     number: number
@@ -8,5 +10,5 @@ export interface Track {
     artists: string
     album: string
     previewUrl: string
-    tags?: string[]
+    tags: Tag[]
 }
