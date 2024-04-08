@@ -1,20 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Track } from "../../interfaces/Track.interface";
 import styles from "./Track.module.css";
 import { AppDispatch, RootState } from "../../Store/store";
 import { currentTrackActions } from "../../Store/currentTrack.slice";
 import { activeManagerActions } from "../../Store/activeManager.slice";
 import cn from "classnames";
+import { Reorder } from "framer-motion";
+import { TrackItemProps } from "./Track.props";
 
-function TrackItem({ props, playlist }: { props: Track, playlist: (Track | undefined)[] | null }) {
+function TrackItem({ track, playlist, className, index }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
     const currentTrack = useSelector((s: RootState) => s.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
 
     const playTrack = () => {
-        if (currentTrack.track?.url != props.previewUrl) {
+        if (currentTrack.track?.url != track.previewUrl) {
             dispatch(currentTrackActions.setTrack({
-                track: props,
+                track: track,
                 playlist
             }));
             dispatch(activeManagerActions.setActive(true));
@@ -24,11 +25,18 @@ function TrackItem({ props, playlist }: { props: Track, playlist: (Track | undef
         }
     };
 
-    const setAnimation = currentTrack.track?.url == props.previewUrl && activeManager.active;
+    const reworkList = () => {
+        console.log("here");
+        dispatch(currentTrackActions.moveTrack({ oldId: track.number, newId: index }));
+    };
 
-    return <button onClick={playTrack} className={cn(styles["track"], {
-        [styles["active-track"]]: currentTrack.track?.url == props.previewUrl
-    })}>
+    const setAnimation = currentTrack.track?.url == track.previewUrl && activeManager.active;
+
+    return <Reorder.Item
+        value={track} id={track.id} onDragEnd={reworkList}
+        onDoubleClick={playTrack} className={cn(styles["track"], className, {
+            [styles["active-track"]]: currentTrack.track?.url == track.previewUrl
+        })}>
         <div className={styles["start-block"]}>
             {setAnimation && <div className={styles["animation"]}>
                 <div className={styles["stroke"]}></div>
@@ -38,24 +46,24 @@ function TrackItem({ props, playlist }: { props: Track, playlist: (Track | undef
             </div>}
             {!setAnimation && <>
                 <img className={styles["play-icon"]} src="/playIcon.svg" alt="" />
-                <div className={styles["id"]}>{props.number + 1}</div>
+                <div className={styles["id"]}>{index + 1}</div>
             </>}
         </div>
-        <img className={styles["img"]} src={props.img} alt="" />
+        <img className={styles["img"]} src={track.img} alt="" />
         <div className={styles["name-author"]}>
-            <div className={styles["name"]}>{props.name}</div>
-            <div className={styles["author"]}>{props.artists}</div>
+            <div className={styles["name"]}>{track.name}</div>
+            <div className={styles["author"]}>{track.artists}</div>
         </div>
         <div className={styles["album"]}>
-            {props.album}
+            {track.album}
         </div>
         <div className={styles["tags"]}>
 
         </div>
         <div className={styles["time"]}>
-            {props.durationText}
+            {track.durationText}
         </div>
-    </button>;
+    </Reorder.Item>;
 }
 
 export default TrackItem;

@@ -100,6 +100,25 @@ export const currentTrackSlice = createSlice({
             if (state.tracks) {
                 state.track = findTrack(state.tracks, state.id);
             }
+        },
+        moveTrack: (state, action: PayloadAction<{ oldId: number, newId: number }>) => {
+            if (!state.tracks || action.payload.oldId == action.payload.newId) {
+                return;
+            }
+            const plus = (action.payload.oldId > action.payload.newId ? 1 : -1);
+            state.tracks = state.tracks.map(track => {
+                if (!track) {
+                    return;
+                }
+                if (track.number == action.payload.oldId) {
+                    track.number = action.payload.newId;
+                }
+                else if (Math.min(action.payload.oldId, action.payload.newId) <= track.number &&
+                    track.number <= Math.max(action.payload.oldId, action.payload.newId)) {
+                    track.number += plus;
+                }
+                return track;
+            });
         }
     }
 });
