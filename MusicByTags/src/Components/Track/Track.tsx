@@ -1,22 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Track.module.css";
 import { AppDispatch, RootState } from "../../Store/store";
-import { currentTrackActions } from "../../Store/currentTrack.slice";
 import { activeManagerActions } from "../../Store/activeManager.slice";
 import cn from "classnames";
 import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
+import { PlayerActions } from "../../Store/playerManager.slice";
 
 function TrackItem({ track, tags, className, index }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
-    const currentTrack = useSelector((s: RootState) => s.currentTrack);
+    const currentTrack = useSelector((s: RootState) => s.player.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
 
     const playTrack = () => {
-        if (currentTrack.track?.url != track.previewUrl) {
-            dispatch(currentTrackActions.setTrack({
-                track: track,
-                listTags: tags
+        if (currentTrack?.previewUrl != track.previewUrl) {
+            dispatch(PlayerActions.setTrack({
+                track,
+                tags
             }));
             dispatch(activeManagerActions.setActive(true));
         }
@@ -25,12 +25,16 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         }
     };
 
-    const setAnimation = currentTrack.track?.url == track.previewUrl && activeManager.active;
+    // const trackMove = () => {
+    //     dispatch(PlayerActions.pushList())
+    // }
+
+    const setAnimation = currentTrack?.previewUrl == track.previewUrl && activeManager.active;
 
     return <Reorder.Item
         value={track} id={track.id}
         onDoubleClick={playTrack} className={cn(styles["track"], className, {
-            [styles["active-track"]]: currentTrack.track?.url == track.previewUrl
+            [styles["active-track"]]: currentTrack?.previewUrl == track.previewUrl
         })}>
         <div className={styles["start-block"]}>
             {setAnimation && <div className={styles["animation"]}>

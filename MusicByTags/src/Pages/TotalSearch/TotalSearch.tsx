@@ -4,7 +4,6 @@ import SearchInput from "../../Components/SearchInput/SearchInput";
 import styles from "./TotalSearch.module.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store/store";
-import { ListsActions } from "../../Store/Lists.slice";
 import { FormEvent } from "react";
 import TrackList from "../../Components/TrackList/TrackList";
 import { getTOKEN } from "../../workWithAPI/getTOKEN";
@@ -12,6 +11,7 @@ import { Track } from "../../interfaces/Track.interface";
 import { AxiosError } from "axios";
 import { searchAPI } from "../../workWithAPI/searchAPI";
 import { List } from "../../interfaces/list.interface";
+import { PlayerActions } from "../../Store/playerManager.slice";
 
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
@@ -46,8 +46,8 @@ function TotalSearch() {
             tracks: data as Track[],
             tags: []
         };
-        // console.log(list);
-        dispatch(ListsActions.pushList(list));
+        list.tracks = list.tracks.filter(t => t);
+        dispatch(PlayerActions.pushList(list));
     };
 
     return (

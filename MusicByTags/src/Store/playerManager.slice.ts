@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { loadState } from "./storage";
 import { List } from "../interfaces/list.interface";
 import { Tag } from "../interfaces/tag.interface";
@@ -34,11 +34,11 @@ export const CMP = (first: Tag[], second: Tag[]) => {
         }
     }
     if (first.length == 0 && second.length == 0)
-        return true;
+        equals = true;
     return equals;
 };
 
-export const listsSlice = createSlice({
+export const PlayerSlice = createSlice({
     name: "player",
     initialState,
     reducers: {
@@ -71,25 +71,15 @@ export const listsSlice = createSlice({
             }
         },
         setTrack: (state, action: PayloadAction<{ track: Track, tags: Tag[] }>) => {
-            const newList = state.lists.find(l => { CMP(l.tags, action.payload.tags) });
+            const newList = state.lists.find(l => CMP(l.tags, action.payload.tags));
             if (!newList) {
                 return;
             }
             state.currentTrack = action.payload.track;
             state.currentTags = action.payload.tags;
-        },
-        prevTrack: (state) => {
-            const currentList = state.lists.find(l => { CMP(l.tags, state.currentTags) });
-            if (!currentList) {
-                return;
-            }
-            let currentId = -1;
-            for (let i = 0; i < currentList.tracks.length; i++) {
-                if ()
-            }
         }
     }
 });
 
-export default listsSlice.reducer;
-export const ListsActions = listsSlice.actions;
+export default PlayerSlice.reducer;
+export const PlayerActions = PlayerSlice.actions;

@@ -1,22 +1,24 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./TrackList.module.css";
-import { RootState } from "../../Store/store";
+import { AppDispatch, RootState } from "../../Store/store";
 import TrackItem from "../Track/Track";
 import { Reorder, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Tag } from "../../interfaces/tag.interface";
 import { CMP } from "../../Store/Lists.slice";
+import { PlayerActions } from "../../Store/playerManager.slice";
 
 function TrackList({ tags }: { tags: Tag[] }) {
-    const { lists } = useSelector((s: RootState) => s.lists);
+    const dispatch = useDispatch<AppDispatch>();
+    const { lists } = useSelector((s: RootState) => s.player);
     const [localTracks, setLocalTrack] = useState((lists.find(l => CMP(l.tags, tags))?.tracks ?? []));
-    console.log(lists.find(l => CMP(l.tags, tags))?.tracks ?? []);
 
     useEffect(() => {
-        if (lists) {
-            setLocalTrack(lists.find(l => CMP(l.tags, tags))?.tracks ?? []);
-        }
-    }, [lists, tags]);
+        dispatch(PlayerActions.pushList({
+            tracks: localTracks,
+            tags
+        }));
+    }, [dispatch, localTracks, tags]);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handlePan = (e: any) => {
@@ -36,15 +38,8 @@ function TrackList({ tags }: { tags: Tag[] }) {
             className={styles["track-list"]}>
             {localTracks?.map((track, index) => {
                 if (track) {
-                    return <TrackItem key={track.id} track={{
-                        ...track,
-                        prev: index ? localTracks[index - 1] : localTracks[index],
-                        next: index != localTracks.length ? localTracks[index + 1] : localTracks[0]
-                    }} index={index}
+                    return <TrackItem key={track.id} track={track} index={index}
                         tags={tags}></TrackItem>;
-                }
-                else {
-                    return <></>;
                 }
             })}
         </Reorder.Group>
