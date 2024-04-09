@@ -6,6 +6,7 @@ import cn from "classnames";
 import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
 import { PlayerActions } from "../../Store/playerManager.slice";
+import AddTag from "../AddTag/AddTag";
 
 function TrackItem({ track, tags, className, index }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -36,7 +37,7 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         onDoubleClick={playTrack} className={cn(styles["track"], className, {
             [styles["active-track"]]: currentTrack?.previewUrl == track.previewUrl
         })}>
-        <div className={styles["start-block"]}>
+        <div className={styles["start-block"]} onClick={playTrack}>
             {setAnimation && <div className={styles["animation"]}>
                 <div className={styles["stroke"]}></div>
                 <div className={styles["stroke"]}></div>
@@ -56,9 +57,7 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         <div className={styles["album"]}>
             {track.album}
         </div>
-        <div className={styles["tags"]}>
-
-        </div>
+        {currentTrack ? <AddTag tags={tags} trackId={currentTrack?.id}></AddTag> : <></>}
         <div className={styles["time"]}>
             {track.durationText}
         </div>

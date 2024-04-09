@@ -5,8 +5,7 @@ import TrackItem from "../Track/Track";
 import { Reorder, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Tag } from "../../interfaces/tag.interface";
-import { CMP } from "../../Store/Lists.slice";
-import { PlayerActions } from "../../Store/playerManager.slice";
+import { CMP, PlayerActions } from "../../Store/playerManager.slice";
 
 function TrackList({ tags }: { tags: Tag[] }) {
     const dispatch = useDispatch<AppDispatch>();
