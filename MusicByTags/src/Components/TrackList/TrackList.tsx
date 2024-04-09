@@ -10,7 +10,7 @@ import { CMP } from "../../Store/Lists.slice";
 function TrackList({ tags }: { tags: Tag[] }) {
     const { lists } = useSelector((s: RootState) => s.lists);
     const [localTracks, setLocalTrack] = useState((lists.find(l => CMP(l.tags, tags))?.tracks ?? []));
-    // console.log(localTracks);
+    console.log(lists.find(l => CMP(l.tags, tags))?.tracks ?? []);
 
     useEffect(() => {
         if (lists) {
@@ -36,7 +36,11 @@ function TrackList({ tags }: { tags: Tag[] }) {
             className={styles["track-list"]}>
             {localTracks?.map((track, index) => {
                 if (track) {
-                    return <TrackItem key={track.id} track={track} index={index}
+                    return <TrackItem key={track.id} track={{
+                        ...track,
+                        prev: index ? localTracks[index - 1] : localTracks[index],
+                        next: index != localTracks.length ? localTracks[index + 1] : localTracks[0]
+                    }} index={index}
                         tags={tags}></TrackItem>;
                 }
                 else {

@@ -10,5 +10,7 @@ export interface Track {
     artists: string
     album: string
     previewUrl: string
+    next?: Track
+    prev?: Track
     tags: Tag[]
 }

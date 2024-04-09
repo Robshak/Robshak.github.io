@@ -6,7 +6,6 @@ import { activeManagerActions } from "../../Store/activeManager.slice";
 import cn from "classnames";
 import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
-import { ListsActions } from "../../Store/Lists.slice";
 
 function TrackItem({ track, tags, className, index }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -26,15 +25,10 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         }
     };
 
-    const reworkList = () => {
-        // console.log(track.number, index);
-        dispatch(ListsActions.moveTrack({ oldId: track.number, newId: index, tags }));
-    };
-
     const setAnimation = currentTrack.track?.url == track.previewUrl && activeManager.active;
 
     return <Reorder.Item
-        value={track} id={track.id} onDragEnd={reworkList}
+        value={track} id={track.id}
         onDoubleClick={playTrack} className={cn(styles["track"], className, {
             [styles["active-track"]]: currentTrack.track?.url == track.previewUrl
         })}>

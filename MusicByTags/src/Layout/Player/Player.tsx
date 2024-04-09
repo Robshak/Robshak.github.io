@@ -116,7 +116,16 @@ function Player() {
     };
 
     const goNext = () => {
-        dispatch(currentTrackActions.nextTrack());
+        if (!currentTrack.track) {
+            return;
+        }
+        if (!currentTrack.track.next) {
+            return;
+        }
+        dispatch(currentTrackActions.setTrack({
+            track: currentTrack.track.next,
+            listTags: currentTrack.tags
+        }));
         // dispatch(activeManagerActions.setActive(false));
     };
 
@@ -128,7 +137,16 @@ function Player() {
             setCurrentPosition(0);
         }
         else {
-            dispatch(currentTrackActions.prevTrack());
+            if (!currentTrack.track) {
+                return;
+            }
+            if (!currentTrack.track.prev) {
+                return;
+            }
+            dispatch(currentTrackActions.setTrack({
+                track: currentTrack.track.prev,
+                listTags: currentTrack.tags
+            }));
         }
     };
 
