@@ -14,6 +14,12 @@ function TrackList({ tags }: { tags: Tag[] }) {
     const [localTracks, setLocalTrack] = useState((lists.find(l => CMP(l.tags, tags))?.tracks ?? []));
 
     useEffect(() => {
+        if (lists) {
+            setLocalTrack(lists.find(l => CMP(l.tags, tags))?.tracks ?? []);
+        }
+    }, [lists, tags]);
+
+    useEffect(() => {
         dispatch(PlayerActions.pushList({
             tracks: localTracks,
             tags

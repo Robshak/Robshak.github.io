@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { saveState } from "./storage";
-import currentTrackSlice, { CURRENT_TRACK_PERSISTENT_STATE } from "./currentTrack.slice";
 import listsSlice, { LISTS_PERSISTENT_STATE } from "./Lists.slice";
 import volumeManagerSlice, { VOLUME_MANAGER_PERSISTENT_STATE } from "./volumeManage.slice";
 import ActiveManagerSlice, { ACTIVE_MANAGER_PERSISTENT_STATE } from "./activeManager.slice";
@@ -10,7 +9,6 @@ import playerManagerSlice, { PLAYER_PERSISTENT_STATE } from "./playerManager.sli
 export const store = configureStore({
     reducer: {
         lists: listsSlice,
-        currentTrack: currentTrackSlice,
         volumeManager: volumeManagerSlice,
         activeManager: ActiveManagerSlice,
         tagList: tagListSlice,
@@ -20,7 +18,6 @@ export const store = configureStore({
 
 store.subscribe(() => {
     saveState(LISTS_PERSISTENT_STATE, { ...store.getState().lists });
-    saveState(CURRENT_TRACK_PERSISTENT_STATE, { ...store.getState().currentTrack });
     saveState(VOLUME_MANAGER_PERSISTENT_STATE, { ...store.getState().volumeManager });
     saveState(ACTIVE_MANAGER_PERSISTENT_STATE, { ...store.getState().activeManager });
     saveState(TAGLIST_PERSISTENT_STATE, { ...store.getState().tagList });

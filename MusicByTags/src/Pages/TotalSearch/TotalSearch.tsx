@@ -47,6 +47,7 @@ function TotalSearch() {
             tags: []
         };
         list.tracks = list.tracks.filter(t => t);
+        // console.log(list.tracks);
         dispatch(PlayerActions.pushList(list));
     };
 
