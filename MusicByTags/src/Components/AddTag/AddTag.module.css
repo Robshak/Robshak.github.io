@@ -2,8 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border: none;
+    padding: 0;
+    background: none;
     width: 140px;
     height: 40px;
+    transition: all 0.1s;
 }
 
 .tag-button {
@@ -32,4 +36,53 @@
 
 .tag-button-wrapper:hover .tag-button-text {
     transform: scale(1.5625);
+}
+
+.tag-button-wrapper:active {
+    transform: scale(0.95);
+}
+
+.tag-popup {
+    width: 200px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background-color-popup);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--border-dark-color);
+}
+
+.header {
+    text-wrap: nowrap;
+    font-family: var(--font);
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.create-new {
+    margin: 0;
+    width: 150px;
+    background: var(--primary-20-color);
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text-color);
+}
+
+.create-new:hover {
+    filter: brightness(90%);
+}
+
+.create-new:active {
+    filter: brightness(80%);
+}
+
+.check {
+    background-color: #000;
+    width: 200px;
+    height: 200px;
 }

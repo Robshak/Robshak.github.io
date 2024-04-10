@@ -57,7 +57,7 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         <div className={styles["album"]}>
             {track.album}
         </div>
-        {currentTrack ? <AddTag tags={tags} trackId={currentTrack?.id}></AddTag> : <></>}
+        {currentTrack ? <AddTag tags={track.tags}></AddTag> : <></>}
         <div className={styles["time"]}>
             {track.durationText}
         </div>

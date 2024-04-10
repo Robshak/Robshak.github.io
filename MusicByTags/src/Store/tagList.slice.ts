@@ -6,17 +6,14 @@ export const TAGLIST_PERSISTENT_STATE = "taglist";
 
 export interface TaglistPersistentState {
     tags: Tag[] | null;
-    currentId: number;
 }
 
 export interface TaglistState {
     tags: Tag[] | null;
-    currentId: number;
 }
 
 const initialState: TaglistState = {
-    tags: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.tags ?? null,
-    currentId: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.currentId ?? 0
+    tags: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.tags ?? null
 };
 
 export const taglistSlice = createSlice({
@@ -24,12 +21,12 @@ export const taglistSlice = createSlice({
     initialState,
     reducers: {
         addTag: (state, action: PayloadAction<Tag>) => {
-            action.payload.id = state.currentId;
-            state.currentId++;
-            state.tags?.push(action.payload);
+            if (!state.tags?.find(t => t.name == action.payload.name)) {
+                state.tags?.push(action.payload);
+            }
         },
-        delTag: (state, action: PayloadAction<number>) => {
-            state.tags?.filter(t => t.id == action.payload);
+        delTag: (state, action: PayloadAction<string>) => {
+            state.tags?.filter(t => t.name == action.payload);
         }
     }
 });
