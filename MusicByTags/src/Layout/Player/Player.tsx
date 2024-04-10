@@ -8,6 +8,7 @@ import { Outlet } from "react-router-dom";
 import { volumeManagerActions } from "../../Store/volumeManage.slice";
 import { activeManagerActions } from "../../Store/activeManager.slice";
 import { CMP, PlayerActions } from "../../Store/playerManager.slice";
+import { currentFocusActions } from "../../Store/currentMouseFocus.slice";
 
 const PRIMARY_COLOR = "F178B6";
 const WHITE_COLOR = "fff";
@@ -178,6 +179,20 @@ function Player() {
             }));
         }
     };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const getTrackObject = (e: any) => {
+        let res = e.target;
+        while (!res.id && res.parentElement) {
+            res = res.parentElement;
+        }
+        return res?.id as string;
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    document.querySelector("html")?.addEventListener("click", (e: any) => {
+        dispatch(currentFocusActions.setFocus(getTrackObject(e)));
+    });
 
     const progressBarToProcent = currentPosition / (currentTrack?.durationMs ? currentTrack.durationMs / 1000 : currentPosition);
     const volumeBarToProcent = volumeManager.volume * 100;

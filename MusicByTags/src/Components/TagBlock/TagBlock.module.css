@@ -1,7 +1,23 @@
 .wrapper {
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: var(--font);
     color: var(--text-color);
+}
+
+.tag-text {
+    background-color: var(--extractor-black-lvl2-color);
+    padding: 1px 3px;
+    border-radius: 3px;
 }

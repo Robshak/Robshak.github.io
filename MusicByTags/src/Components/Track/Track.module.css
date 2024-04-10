@@ -42,6 +42,10 @@
     background-color: var(--primary-20-color);
 }
 
+.focus-track {
+    background-color: var(--primary-20-color);
+}
+
 .id {
     color: var(--text-secondary-color);
 }

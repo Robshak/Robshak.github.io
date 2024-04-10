@@ -5,15 +5,15 @@ import { Tag } from "../interfaces/tag.interface";
 export const TAGLIST_PERSISTENT_STATE = "taglist";
 
 export interface TaglistPersistentState {
-    tags: Tag[] | null;
+    tags: Tag[];
 }
 
 export interface TaglistState {
-    tags: Tag[] | null;
+    tags: Tag[];
 }
 
 const initialState: TaglistState = {
-    tags: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.tags ?? null
+    tags: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.tags ?? []
 };
 
 export const taglistSlice = createSlice({
@@ -21,12 +21,18 @@ export const taglistSlice = createSlice({
     initialState,
     reducers: {
         addTag: (state, action: PayloadAction<Tag>) => {
-            if (!state.tags?.find(t => t.name == action.payload.name)) {
-                state.tags?.push(action.payload);
+            if (!action.payload.name || !action.payload.color) {
+                return;
+            }
+            if (!state.tags.find(t => t.name == action.payload.name)) {
+                console.log("here");
+                const newState = [...state.tags];
+                newState.push(action.payload);
+                state.tags = newState;
             }
         },
         delTag: (state, action: PayloadAction<string>) => {
-            state.tags?.filter(t => t.name == action.payload);
+            state.tags = state.tags.filter(t => t.name == action.payload);
         }
     }
 });

@@ -8,7 +8,7 @@ function TagItem({ tag, status }: { tag: Tag, status: boolean }) {
     // к её тегам и отобразить сначала добавленные, потом остольные, но без повторов
 
     return <div className={styles["wrapper"]}>
-        <TagBlock tag={tag}></TagBlock>
+        <TagBlock tag={tag} className={styles["tag-block"]}></TagBlock>
         <div className={cn(styles["tag-status"], {
             [styles["added-tag"]]: status
         })}></div>

@@ -4,13 +4,15 @@ import volumeManagerSlice, { VOLUME_MANAGER_PERSISTENT_STATE } from "./volumeMan
 import ActiveManagerSlice, { ACTIVE_MANAGER_PERSISTENT_STATE } from "./activeManager.slice";
 import tagListSlice, { TAGLIST_PERSISTENT_STATE } from "./tagList.slice";
 import playerManagerSlice, { PLAYER_PERSISTENT_STATE } from "./playerManager.slice";
+import currentMouseFocusSlice from "./currentMouseFocus.slice";
 
 export const store = configureStore({
     reducer: {
         volumeManager: volumeManagerSlice,
         activeManager: ActiveManagerSlice,
         tagList: tagListSlice,
-        player: playerManagerSlice
+        player: playerManagerSlice,
+        currentFocus: currentMouseFocusSlice
     }
 });
 

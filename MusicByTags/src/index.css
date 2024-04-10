@@ -7,6 +7,8 @@
   --background-color-popup: #2d2d2d;
   --extractor-lvl1-color: rgba(255, 255, 255, 0.03);
   --extractor-lvl2-color: rgba(255, 255, 255, 0.07);
+  --extractor-black-lvl1-color: rgba(0, 0, 0, 0.1);
+  --extractor-black-lvl2-color: rgba(0, 0, 0, 0.25);
   --text-color: #fff;
   --text-secondary-color: #a7a7a7;
   --primary-dark-color: #EF5DA8;
@@ -33,12 +35,6 @@ body {
   margin: 0px auto;
   margin-top: 60px;
   font-family: var(--font);
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .popup-arrow {

@@ -11,6 +11,7 @@ function TrackList({ tags }: { tags: Tag[] }) {
     const dispatch = useDispatch<AppDispatch>();
     const { lists } = useSelector((s: RootState) => s.player);
     const [localTracks, setLocalTrack] = useState((lists.find(l => CMP(l.tags, tags))?.tracks ?? []));
+    const focusTrack = useSelector((s: RootState) => s.currentFocus);
 
     useEffect(() => {
         if (lists) {
@@ -44,7 +45,7 @@ function TrackList({ tags }: { tags: Tag[] }) {
             {localTracks?.map((track, index) => {
                 if (track) {
                     return <TrackItem key={track.id} track={track} index={index}
-                        tags={tags}></TrackItem>;
+                        tags={tags} focusActive={focusTrack.currentFocus == track.id}></TrackItem>;
                 }
             })}
         </Reorder.Group>

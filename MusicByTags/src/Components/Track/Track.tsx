@@ -8,7 +8,7 @@ import { TrackItemProps } from "./Track.props";
 import { PlayerActions } from "../../Store/playerManager.slice";
 import AddTag from "../AddTag/AddTag";
 
-function TrackItem({ track, tags, className, index }: TrackItemProps) {
+function TrackItem({ track, tags, className, index, focusActive }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
     const currentTrack = useSelector((s: RootState) => s.player.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
@@ -26,16 +26,19 @@ function TrackItem({ track, tags, className, index }: TrackItemProps) {
         }
     };
 
-    // const trackMove = () => {
-    //     dispatch(PlayerActions.pushList())
-    // }
+    const clickToTrack = () => {
+        if (focusActive) {
+            playTrack();
+        }
+    };
 
     const setAnimation = currentTrack?.previewUrl == track.previewUrl && activeManager.active;
 
     return <Reorder.Item
-        value={track} id={track.id}
-        onDoubleClick={playTrack} className={cn(styles["track"], className, {
-            [styles["active-track"]]: currentTrack?.previewUrl == track.previewUrl
+        value={track} id={track.id} onClick={clickToTrack}
+        className={cn(styles["track"], className, {
+            [styles["active-track"]]: currentTrack?.previewUrl == track.previewUrl,
+            [styles["focus-track"]]: focusActive
         })}>
         <div className={styles["start-block"]} onClick={playTrack}>
             {setAnimation && <div className={styles["animation"]}>

@@ -7,4 +7,5 @@ export interface TrackItemProps {
     className?: string;
     track: Track;
     tags: Tag[];
+    focusActive: boolean;
 }
