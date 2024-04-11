@@ -60,7 +60,7 @@ function TrackItem({ track, tags, className, index, focusActive }: TrackItemProp
         <div className={styles["album"]}>
             {track.album}
         </div>
-        {currentTrack ? <AddTag tags={track.tags}></AddTag> : <></>}
+        {track ? <AddTag track={track}></AddTag> : <></>}
         <div className={styles["time"]}>
             {track.durationText}
         </div>

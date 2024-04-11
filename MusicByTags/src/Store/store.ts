@@ -5,6 +5,7 @@ import ActiveManagerSlice, { ACTIVE_MANAGER_PERSISTENT_STATE } from "./activeMan
 import tagListSlice, { TAGLIST_PERSISTENT_STATE } from "./tagList.slice";
 import playerManagerSlice, { PLAYER_PERSISTENT_STATE } from "./playerManager.slice";
 import currentMouseFocusSlice from "./currentMouseFocus.slice";
+import tagListOnTrackSlice, { TAGLISTONTRACK_MANAGER_PERSISTENT_STATE } from "./tagListOnTrack..slice";
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
         activeManager: ActiveManagerSlice,
         tagList: tagListSlice,
         player: playerManagerSlice,
-        currentFocus: currentMouseFocusSlice
+        currentFocus: currentMouseFocusSlice,
+        taglistOnTrack: tagListOnTrackSlice
     }
 });
 
@@ -21,6 +23,7 @@ store.subscribe(() => {
     saveState(ACTIVE_MANAGER_PERSISTENT_STATE, { ...store.getState().activeManager });
     saveState(TAGLIST_PERSISTENT_STATE, { ...store.getState().tagList });
     saveState(PLAYER_PERSISTENT_STATE, { ...store.getState().player });
+    saveState(TAGLISTONTRACK_MANAGER_PERSISTENT_STATE, { ...store.getState().taglistOnTrack });
 });
 
 export type RootState = ReturnType<typeof store.getState>;

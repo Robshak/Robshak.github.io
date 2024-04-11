@@ -25,7 +25,6 @@ export const taglistSlice = createSlice({
                 return;
             }
             if (!state.tags.find(t => t.name == action.payload.name)) {
-                console.log("here");
                 const newState = [...state.tags];
                 newState.push(action.payload);
                 state.tags = newState;

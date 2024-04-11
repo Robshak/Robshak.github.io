@@ -11,7 +11,12 @@
 .tag-status {
     width: 10px;
     height: 10px;
+    border: 1px solid var(--primary-color);
     border-radius: 90%;
+    background: none;
+}
+
+.added-tag {
     background-color: var(--primary-color);
 }
 

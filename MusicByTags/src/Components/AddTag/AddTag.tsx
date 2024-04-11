@@ -7,17 +7,25 @@ import cn from "classnames";
 import Popup from "reactjs-popup";
 import CreateTag from "../CreateTag/CreateTag";
 
-function AddTag({ tags }: AddTagProps) {
+function AddTag({ track }: AddTagProps) {
     const allTags = useSelector((s: RootState) => s.tagList);
+    const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
 
     const getTagList = () => {
-        if (!tags && !allTags) {
+        if (!allTags) {
             return;
         }
+        const needTrack = tracks.find(tr => tr.id == track.id);
+        // console.log(needTrack);
+        // if (needTrack) {
+        //     return;
+        // }
+        const tags = needTrack?.tags;
+        // console.log(tags);
         let have: JSX.Element[] = [];
         if (tags) {
             have = tags.map(t => {
-                return <TagItem key={t.name} tag={t} status={true}></TagItem>;
+                return <TagItem key={t.name} tag={t} status={true} track={track}></TagItem>;
             });
         }
         const havent = allTags.tags
@@ -28,7 +36,7 @@ function AddTag({ tags }: AddTagProps) {
                 return true;
             })
             .map(t => {
-                return <TagItem tag={t} status={false}></TagItem>;
+                return <TagItem key={t.name} tag={t} status={false} track={track}></TagItem>;
             });
         if (havent) {
             return have.concat(havent);

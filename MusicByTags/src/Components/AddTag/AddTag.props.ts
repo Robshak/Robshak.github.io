@@ -1,5 +1,5 @@
-import { Tag } from "../../interfaces/tag.interface";
+import { Track } from "../../interfaces/Track.interface";
 
 export interface AddTagProps {
-    tags: Tag[];
+    track: Track;
 }
