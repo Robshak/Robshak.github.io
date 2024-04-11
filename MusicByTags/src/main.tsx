@@ -7,6 +7,7 @@ import CreatePlaylist from "./Pages/CreatePlaylist/CreatePlaylist";
 import { Provider } from "react-redux";
 import { store } from "./Store/store";
 import Player from "./Layout/Player/Player";
+import { ContextMenuProvider } from "./Components/Context/Contextmenu/Contextmenu.provider";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +29,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router}></RouterProvider>
+      <ContextMenuProvider>
+        <RouterProvider router={router}></RouterProvider>
+      </ContextMenuProvider>
     </Provider>
   </React.StrictMode>
 );

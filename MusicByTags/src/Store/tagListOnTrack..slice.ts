@@ -21,6 +21,10 @@ export const taglistOnTrackStateSlice = createSlice({
     name: "taglistOnTrack",
     initialState,
     reducers: {
+        setOnTrack: (state, action: PayloadAction<{ track: Track, tags: Tag[] }>) => {
+            state.tracks = state.tracks.filter(tr => tr.id != action.payload.track.id);
+            state.tracks.push({ ...action.payload.track, tags: action.payload.tags });
+        },
         addTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
             const needTrack = state.tracks.find(tr => tr.id == action.payload.track.id);
             if (!needTrack) {
@@ -36,12 +40,12 @@ export const taglistOnTrackStateSlice = createSlice({
                 state.tracks.push(needTrack);
             }
         },
-        deleteTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
+        deleteTag: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
             const needTrack = state.tracks.find(tr => tr.id == action.payload.track.id);
             if (!needTrack) {
-                console.log("break");
                 return;
             }
+            // console.log(needTrack);
             state.tracks = state.tracks.filter(tr => tr.id != needTrack.id);
             if (needTrack.tags.length > 1) {
                 needTrack.tags = needTrack.tags.filter(tg => tg.name != action.payload.tag.name);

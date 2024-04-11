@@ -16,6 +16,7 @@ import { PlayerActions } from "../../Store/playerManager.slice";
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
     const naviaget = useNavigate();
+    // const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
 
     getTOKEN();
 
@@ -47,7 +48,9 @@ function TotalSearch() {
             tags: []
         };
         list.tracks = list.tracks.filter(t => t);
-        // console.log(list.tracks);
+        // list.tracks = list.tracks.map(tr => {
+        //     return tracks.find(tr2 => tr2.id == tr.id) ?? { ...tr, tags: [] };
+        // });
         dispatch(PlayerActions.pushList(list));
     };
 
@@ -57,7 +60,7 @@ function TotalSearch() {
                 <SearchInput img="/searchIcon.svg" id="search" type="text"
                     placeholder="Search by song or author" autoComplete="off"
                     autoFocus onChange={onSearch}></SearchInput>
-                <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Button</MenuButton>
+                <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Create playlist</MenuButton>
             </div>
             <TrackList tags={[]}></TrackList>
         </div>

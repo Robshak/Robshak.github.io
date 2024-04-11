@@ -1,9 +1,5 @@
-.popup {
-    -webkit-app-region: no-drag;
-    position: absolute;
-}
-
 .tag-button-wrapper {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,8 +45,8 @@
 }
 
 .tag-popup {
-    width: 200px;
-    position: absolute;
+    width: 260px;
+    position: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;

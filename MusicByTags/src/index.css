@@ -44,3 +44,11 @@ body {
 button {
   cursor: pointer;
 }
+
+.popup-content {
+  position: absolute !important;
+}
+
+.popup-overlay {
+  z-index: 0 !important;
+}

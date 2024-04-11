@@ -14,7 +14,7 @@ function CreatePlaylist() {
         <div className={styles["page"]}>
             <div className={styles["header"]}>
                 <MenuButton onClick={changePage} img="/searchIcon.svg" active={false}>Search</MenuButton>
-                <MenuButton img="/playlist.svg" active={true}>Button</MenuButton>
+                <MenuButton img="/playlist.svg" active={true}>Create playlist</MenuButton>
             </div>
         </div>
     );

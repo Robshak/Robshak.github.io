@@ -183,7 +183,7 @@ function Player() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getTrackObject = (e: any) => {
         let res = e.target;
-        while (!res.id && res.parentElement) {
+        while (!res.id && res.parentElement && !(res.value == "unClicked")) {
             res = res.parentElement;
         }
         return res?.id as string;

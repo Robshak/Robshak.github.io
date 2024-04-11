@@ -1,9 +1,11 @@
 import { FormEvent, useState } from "react";
 import styles from "./CreateTag.module.css";
 import Popup from "reactjs-popup";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../Store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../Store/store";
 import { taglistActions } from "../../Store/tagList.slice";
+import { Track } from "../../interfaces/Track.interface";
+import { taglistOnTrackStateActions } from "../../Store/tagListOnTrack..slice";
 
 export type CreateTagForm = {
     tagName: {
@@ -14,8 +16,10 @@ export type CreateTagForm = {
     }
 }
 
-function CreateTag() {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function CreateTag({ track, closePopup }: { track: Track, closePopup: any }) {
     const dispatch = useDispatch<AppDispatch>();
+    const { tags } = useSelector((s: RootState) => s.openTagsNow);
     const [openState, setOpenState] = useState(false);
 
     const submit = (e: FormEvent) => {
@@ -28,8 +32,16 @@ function CreateTag() {
         }
     };
 
+    const setTags = () => {
+        dispatch(taglistOnTrackStateActions.setOnTrack({ track: track, tags: tags }));
+        closePopup();
+    };
+
     return <>
-        <button onClick={() => { setOpenState(true); }} className={styles["create-tag"]}>Create tag</button>
+        <div className={styles["buttons-block"]}>
+            <button onClick={() => { setOpenState(true); }} className={styles["create-tag"]}>Create tag</button>
+            <button onClick={setTags} className={styles["ready"]}>Ready</button>
+        </div>
         <Popup open={openState} modal>
             <form className={styles["wrapper"]} onSubmit={submit}>
                 <button onClick={() => { setOpenState(false); }} className={styles["cross"]}>
