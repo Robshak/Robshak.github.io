@@ -57,7 +57,7 @@ function TotalSearch() {
                 <SearchInput img="/searchIcon.svg" id="search" type="text"
                     placeholder="Search by song or author" autoComplete="off"
                     autoFocus onChange={onSearch}></SearchInput>
-                <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Button</MenuButton>
+                <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Create playlist</MenuButton>
             </div>
             <TrackList tags={[]}></TrackList>
         </div>

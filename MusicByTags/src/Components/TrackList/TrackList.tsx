@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./TrackList.module.css";
 import { AppDispatch, RootState } from "../../Store/store";
 import TrackItem from "../Track/Track";
-import { Reorder, motion } from "framer-motion";
+import Reorder from "react-reorder";
 import { useEffect, useState } from "react";
 import { Tag } from "../../interfaces/tag.interface";
 import { CMP, PlayerActions } from "../../Store/playerManager.slice";
@@ -26,30 +26,28 @@ function TrackList({ tags }: { tags: Tag[] }) {
         }));
     }, [dispatch, localTracks, tags]);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handlePan = (e: any) => {
-        const mousePos = e.clientY;
-        const windowHeight = window.screen.height;
-        if (mousePos < 100) {
-            scrollTo(0, window.pageYOffset - 15);
-        } else if (windowHeight - mousePos < 300) {
-            scrollTo(0, window.pageYOffset + 15);
-        }
-    };
-
-    return <motion.div
-        onPan={handlePan}
-        className="track-list-wrapper">
-        <Reorder.Group axis="y" onReorder={setLocalTrack} values={localTracks}
-            className={styles["track-list"]}>
+    return <div className={styles["track-list-wrapper"]}>
+        <Reorder
+            reorderId="playlist" // Unique ID that is used internally to track this list (required)
+            reorderGroup="playlist-group" // A group ID that allows items to be dragged between lists of the same group (optional)
+            component="ul" // Tag name or Component to be used for the wrapping element (optional), defaults to 'div'
+            draggedClassName="dragged" // Class name to be applied to dragged elements (optional), defaults to 'dragged'
+            lock="horizontal" // Lock the dragging direction (optional): vertical, horizontal (do not use with groups)
+            //holdTime={500} // Default hold time before dragging begins (mouse & touch) (optional), defaults to 0
+            touchHoldTime={200} // Hold time before dragging begins on touch devices (optional), defaults to holdTime
+            mouseHoldTime={0} // Hold time before dragging begins with mouse (optional), defaults to holdTime
+            onReorder={setLocalTrack} // Callback when an item is dropped (you will need this to update your state)
+            autoScroll={true} // Enable auto-scrolling when the pointer is close to the edge of the Reorder component (optional), defaults to true
+            className={styles["track-list"]}
+        >
             {localTracks?.map((track, index) => {
                 if (track) {
                     return <TrackItem key={track.id} track={track} index={index}
                         tags={tags} focusActive={focusTrack.currentFocus == track.id}></TrackItem>;
                 }
             })}
-        </Reorder.Group>
-    </motion.div>;
+        </Reorder>
+    </div>;
 }
 
 export default TrackList;

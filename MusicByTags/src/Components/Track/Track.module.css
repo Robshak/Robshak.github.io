@@ -1,6 +1,6 @@
 .track {
     display: grid;
-    grid-template-columns: 20px 70px 300px 250px 140px 50px;
+    grid-template-columns: 20px 70px 300px 250px 20px 140px 50px;
     align-items: center;
     gap: 15px;
     padding: 10px 20px;
@@ -84,6 +84,19 @@
 
 .time {
     color: var(--text-secondary-color);
+}
+
+.count-tags {
+    color: var(--primary-color);
+}
+
+.count-tags-popup {
+    font-family: var(--font);
+    color: var(--primary-color);
+    background-color: var(--background-color-popup);
+    border: 2px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .track:hover .animation {

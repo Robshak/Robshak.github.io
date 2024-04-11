@@ -43,6 +43,7 @@ export const PlayerSlice = createSlice({
     initialState,
     reducers: {
         pushList: (state, action: PayloadAction<List>) => {
+            // console.log(action.payload);
             if (!action.payload) {
                 return;
             }

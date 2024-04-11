@@ -1,5 +1,4 @@
 .popup {
-    -webkit-app-region: no-drag;
     position: absolute;
 }
 
@@ -49,7 +48,7 @@
 }
 
 .tag-popup {
-    width: 200px;
+    width: 260px;
     position: absolute;
     display: flex;
     flex-direction: column;

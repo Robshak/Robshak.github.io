@@ -4,25 +4,27 @@ import TagBlock from "../TagBlock/TagBlock";
 import styles from "./TagItem.module.css";
 import cn from "classnames";
 import { AppDispatch } from "../../Store/store";
-import { Track } from "../../interfaces/Track.interface";
-import { taglistOnTrackStateActions } from "../../Store/tagListOnTrack..slice";
+import { useState } from "react";
+import { openTagsNowStateActions } from "../../Store/openTagsNow.slice";
 
-function TagItem({ tag, status, track }: { tag: Tag, status: boolean, track: Track }) { //FIX - вынести в props
+function TagItem({ tag, status }: { tag: Tag, status: boolean }) { //FIX - вынести в props
     const dispatch = useDispatch<AppDispatch>();
+    const [currentStatus, setCurrentStatus] = useState<boolean>(status);
 
     const toggleTrack = () => {
-        if (!status) {
-            dispatch(taglistOnTrackStateActions.addTagOnTrack({ tag, track }));
+        if (currentStatus) {
+            dispatch(openTagsNowStateActions.delTag(tag));
         }
         else {
-            dispatch(taglistOnTrackStateActions.deleteTrack({ tag, track }));
+            dispatch(openTagsNowStateActions.addTag(tag));
         }
+        setCurrentStatus(s => !s);
     };
 
     return <div onClick={toggleTrack} className={styles["wrapper"]}>
         <TagBlock tag={tag} className={styles["tag-block"]}></TagBlock>
         <div className={cn(styles["tag-status"], {
-            [styles["added-tag"]]: status
+            [styles["added-tag"]]: currentStatus
         })}></div>
     </div>;
 }

@@ -1,31 +1,28 @@
 import styles from "./AddTag.module.css";
 import { AddTagProps } from "./AddTag.props";
-import { useSelector } from "react-redux";
-import { RootState } from "../../Store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../Store/store";
 import TagItem from "../TagItem/TagItem";
 import cn from "classnames";
 import Popup from "reactjs-popup";
 import CreateTag from "../CreateTag/CreateTag";
+import { openTagsNowStateActions } from "../../Store/openTagsNow.slice";
+import { useState } from "react";
 
 function AddTag({ track }: AddTagProps) {
+    const dispatch = useDispatch<AppDispatch>();
     const allTags = useSelector((s: RootState) => s.tagList);
-    const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
+    const [popupState, setPopupState] = useState(false);
 
     const getTagList = () => {
         if (!allTags) {
             return;
         }
-        const needTrack = tracks.find(tr => tr.id == track.id);
-        // console.log(needTrack);
-        // if (needTrack) {
-        //     return;
-        // }
-        const tags = needTrack?.tags;
-        // console.log(tags);
+        const tags = track?.tags;
         let have: JSX.Element[] = [];
         if (tags) {
             have = tags.map(t => {
-                return <TagItem key={t.name} tag={t} status={true} track={track}></TagItem>;
+                return <TagItem key={t.name} tag={t} status={true}></TagItem>;
             });
         }
         const havent = allTags.tags
@@ -36,7 +33,7 @@ function AddTag({ track }: AddTagProps) {
                 return true;
             })
             .map(t => {
-                return <TagItem key={t.name} tag={t} status={false} track={track}></TagItem>;
+                return <TagItem key={t.name} tag={t} status={false}></TagItem>;
             });
         if (havent) {
             return have.concat(havent);
@@ -44,19 +41,27 @@ function AddTag({ track }: AddTagProps) {
         return have;
     };
 
+    const setTags = () => {
+        if (!track) {
+            return;
+        }
+        dispatch(openTagsNowStateActions.setTags(track.tags));
+        setPopupState(s => !s);
+    };
+
     return <>
-        <Popup trigger={open => (
-            <button className={styles["tag-button-wrapper"]}>
-                <div className={styles["tag-button"]}>
-                    <div className={cn(styles["tag-button-text"], {
-                        [styles["tag-button-active"]]: open
-                    })}>
-                        Add tags
-                    </div>
+        <button onClick={setTags} className={styles["tag-button-wrapper"]} value={"unClicked"}>
+            <div className={styles["tag-button"]}>
+                <div className={cn(styles["tag-button-text"], {
+                    [styles["tag-button-active"]]: popupState
+                })}>
+                    Add tags
                 </div>
-            </button>
-        )}
-            position="top center"
+            </div>
+        </button>
+        <Popup open={popupState}
+            onClose={() => setPopupState(false)}
+            position="top right"
             nested
             className={styles["popup"]}>
             <div onClick={(e) => e.stopPropagation()} className={cn(styles["tag-popup"])}>
@@ -66,7 +71,7 @@ function AddTag({ track }: AddTagProps) {
                 <div className={styles["body"]}>
                     {getTagList()}
                 </div>
-                <CreateTag></CreateTag>
+                <CreateTag track={track} closePopup={() => setPopupState(false)}></CreateTag>
             </div>
         </Popup>
     </>;

@@ -129,13 +129,20 @@
     background-color: var(--extractor-black-lvl2-color);
 }
 
+.buttons-block {
+    display: flex;
+    gap: 5px;
+}
+
 .create-tag {
-    color: var(--text-color);
+    color: var(--primary-color);
     font-size: 16px;
     padding: 10px 20px;
     border-radius: 7px;
-    border: none;
-    background-color: var(--primary-20-color);
+    border: 1px solid var(--primary-color);
+    background: none;
+    font-weight: 600;
+    /* background-color: var(--primary-20-color); */
 }
 
 .create-tag:hover {
@@ -143,5 +150,23 @@
 }
 
 .create-tag:active {
+    filter: brightness(80%);
+}
+
+.ready {
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 7px;
+    border: none;
+    background-color: var(--primary-color);
+}
+
+.ready:hover {
+    filter: brightness(90%);
+}
+
+.ready:active {
     filter: brightness(80%);
 }

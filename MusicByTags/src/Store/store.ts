@@ -6,6 +6,7 @@ import tagListSlice, { TAGLIST_PERSISTENT_STATE } from "./tagList.slice";
 import playerManagerSlice, { PLAYER_PERSISTENT_STATE } from "./playerManager.slice";
 import currentMouseFocusSlice from "./currentMouseFocus.slice";
 import tagListOnTrackSlice, { TAGLISTONTRACK_MANAGER_PERSISTENT_STATE } from "./tagListOnTrack..slice";
+import openTagsNowSlice from "./openTagsNow.slice";
 
 export const store = configureStore({
     reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
         tagList: tagListSlice,
         player: playerManagerSlice,
         currentFocus: currentMouseFocusSlice,
-        taglistOnTrack: tagListOnTrackSlice
+        taglistOnTrack: tagListOnTrackSlice,
+        openTagsNow: openTagsNowSlice
     }
 });
 
