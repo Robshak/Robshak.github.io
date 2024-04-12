@@ -42,8 +42,16 @@ function CreateTag({ track, closePopup }: { track: Track, closePopup: any }) {
             <button onClick={() => { setOpenState(true); }} className={styles["create-tag"]}>Create tag</button>
             <button onClick={setTags} className={styles["ready"]}>Ready</button>
         </div>
-        <Popup open={openState} modal>
-            <form className={styles["wrapper"]} onSubmit={submit}>
+        <Popup open={openState}
+            onClose={() => setOpenState(false)}
+            modal
+        >
+            <form className={styles["wrapper"]} onSubmit={submit}
+                style={{
+                    top: window.innerHeight / 2 - 150,
+                    left: window.innerWidth / 2 - 130
+                }}
+            >
                 <button onClick={() => { setOpenState(false); }} className={styles["cross"]}>
                     <img src="/popupCrossIcon.svg" alt="" />
                 </button>

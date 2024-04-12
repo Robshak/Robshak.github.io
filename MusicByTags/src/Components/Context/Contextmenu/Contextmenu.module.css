@@ -1,5 +1,7 @@
 .context-menu {
     position: absolute;
+    background-color: var(--background-color-main);
+    border: 2px solid var(--border-dark-color);
     border-radius: 5px;
     padding: 5px;
     z-index: 10;
@@ -8,5 +10,6 @@
 .context-menu-item {
     color: var(--text-color);
     font-size: 14px;
+    line-height: 30px;
     list-style-type: none;
 }
