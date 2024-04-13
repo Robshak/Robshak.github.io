@@ -1,0 +1,152 @@
+.wrapper {
+    position: absolute;
+    top: -150px;
+    left: -130px;
+    background-color: var(--background-color-popup);
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid var(--border-dark-color);
+    font-family: var(--font);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+}
+
+.create-new {
+    margin: 0;
+    width: 150px;
+    background: var(--primary-20-color);
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--text-color);
+}
+
+.create-new:hover {
+    filter: brightness(90%);
+}
+
+.create-new:active {
+    filter: brightness(80%);
+}
+
+.cross {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: none;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.2 scale;
+}
+
+.cross img {
+    width: 30px;
+    height: 30px;
+}
+
+.cross:hover {
+    filter: brightness(90%);
+}
+
+.cross:active {
+    scale: 0.9;
+}
+
+.header {
+    font-size: 20px;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
+
+.group-name {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.chose-name {
+    background-color: var(--extractor-lvl1-color);
+    color: var(--primary-ultralight-color);
+    border-radius: 10px;
+    border: 2px solid var(--primary-color);
+    padding: 10px;
+    font-size: 16px;
+    outline: none;
+}
+
+.chose-name:focus {
+    outline: none;
+    border: 2px solid var(--primary-light-color);
+}
+
+.group-color {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+.chose-color {
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    width: 140px;
+    height: 40px;
+    background: none;
+}
+
+.chose-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+    background: none;
+}
+
+.chose-color::-webkit-color-swatch {
+    border-radius: 5px;
+    border: none;
+}
+
+.group-name-text,
+.group-color-text {
+    color: var(--text-color);
+}
+
+.group-color:hover {
+    filter: brightness(90%);
+}
+
+.group-color-text {
+    font-weight: 500;
+}
+
+.group-color-text {
+    position: absolute;
+    top: 6px;
+    left: 17px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--extractor-black-lvl2-color);
+}
+
+.create-tag {
+    color: var(--primary-color);
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 7px;
+    border: 1px solid var(--primary-color);
+    background: none;
+    font-weight: 600;
+}
+
+.create-tag:hover {
+    filter: brightness(90%);
+}
+
+.create-tag:active {
+    filter: brightness(80%);
+}

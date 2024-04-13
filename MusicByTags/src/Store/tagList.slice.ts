@@ -31,7 +31,15 @@ export const taglistSlice = createSlice({
             }
         },
         delTag: (state, action: PayloadAction<string>) => {
-            state.tags = state.tags.filter(t => t.name == action.payload);
+            state.tags = state.tags.filter(t => t.name != action.payload);
+        },
+        reworkTag: (state, action: PayloadAction<{ tagName: string, newValue: Tag }>) => {
+            state.tags = state.tags.map(tg => {
+                if (action.payload.tagName == tg.name) {
+                    tg = action.payload.newValue;
+                }
+                return tg;
+            });
         }
     }
 });

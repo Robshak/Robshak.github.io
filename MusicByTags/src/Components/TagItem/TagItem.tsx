@@ -8,21 +8,29 @@ import { MouseEvent, useCallback, useMemo, useState } from "react";
 import { openTagsNowStateActions } from "../../Store/openTagNow.slice";
 import { useContextMenu } from "../Hooks/useContextMenu";
 import { ContextMenuItem, ContextMenuPosition } from "../Context/Contextmenu/Contextmenu.context";
+import TagSettingPopup from "../Popup/TagSettingPopup/TagSettingPopup";
+import { taglistOnTrackStateActions } from "../../Store/tagListOnTrack..slice";
+import { taglistActions } from "../../Store/tagList.slice";
 // import { openTagsNowStateActions } from "../../Store/openTagsNow.slice";
 
 function TagItem({ tag, status }: { tag: Tag, status: boolean }) { //FIX - вынести в props
     const dispatch = useDispatch<AppDispatch>();
     const [currentStatus, setCurrentStatus] = useState<boolean>(status);
     const { setContextMenu } = useContextMenu();
+    const [openReworkPopup, setOpenReworkPopup] = useState<boolean>(false);
 
     const contextMenu = useMemo(() => [
         {
             name: "Rework tag",
-            onClick: () => { }
+            onClick: () => { setOpenReworkPopup(true); }
         },
         {
             name: "Delete tag",
-            onClick: () => { }
+            onClick: () => {
+                dispatch(taglistOnTrackStateActions.deleteTagOnAllTracks(tag));
+                dispatch(taglistActions.delTag(tag.name));
+                dispatch(openTagsNowStateActions.delTag(tag));
+            }
         }
     ] as ContextMenuItem[], []);
 
@@ -53,6 +61,10 @@ function TagItem({ tag, status }: { tag: Tag, status: boolean }) { //FIX - вы�
         <div className={cn(styles["tag-status"], {
             [styles["added-tag"]]: currentStatus
         })}></div>
+        {openReworkPopup && <TagSettingPopup
+            reworkName={tag.name}
+            onClose={() => setOpenReworkPopup(false)}
+        ></TagSettingPopup>}
     </div>;
 }
 

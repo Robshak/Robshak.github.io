@@ -67,7 +67,7 @@ function AddTag({ track }: AddTagProps) {
                 </div>
             </div>
         </button>
-        <Popup open={popupState}
+        <Popup open={popupState} defaultOpen
             onClose={() => setPopupState(false)}
             position="top right"
             nested

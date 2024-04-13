@@ -40,7 +40,7 @@ export const taglistOnTrackStateSlice = createSlice({
                 state.tracks.push(needTrack);
             }
         },
-        deleteTag: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
+        deleteTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
             const needTrack = state.tracks.find(tr => tr.id == action.payload.track.id);
             if (!needTrack) {
                 return;
@@ -51,6 +51,13 @@ export const taglistOnTrackStateSlice = createSlice({
                 needTrack.tags = needTrack.tags.filter(tg => tg.name != action.payload.tag.name);
                 state.tracks.push(needTrack);
             }
+        },
+        deleteTagOnAllTracks: (state, action: PayloadAction<Tag>) => {
+            state.tracks = state.tracks.map(tr => {
+                tr.tags = tr.tags.filter(tg => tg.name != action.payload.name);
+                return tr;
+            });
+            state.tracks = state.tracks.filter(tr => tr.tags.length);
         }
     }
 });

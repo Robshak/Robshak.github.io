@@ -16,7 +16,6 @@ export const ContextMenuProvider: FC<PropsWithChildren<object>> = ({ children })
     }, []);
 
     useEffect(() => {
-        console.log("here");
         document.getElementById("popup-root")?.addEventListener("click", closeMenu);
         document.body?.addEventListener("click", closeMenu);
 

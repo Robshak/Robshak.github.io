@@ -11,5 +11,15 @@
     color: var(--text-color);
     font-size: 14px;
     line-height: 30px;
+    padding: 2px;
     list-style-type: none;
+    cursor: pointer;
+}
+
+.context-menu-item:hover {
+    background-color: var(--background-color-popup);
+}
+
+.context-menu-item:active {
+    background-color: #424242;
 }
