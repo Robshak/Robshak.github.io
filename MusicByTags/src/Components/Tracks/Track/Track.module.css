@@ -13,7 +13,7 @@
 
 .track-block {
     display: grid;
-    grid-template-columns: 20px 70px 300px 250px 20px 140px 50px;
+    grid-template-columns: 20px 70px 300px 250px 50px;
     align-items: center;
     gap: 15px;
     background: none;
@@ -22,7 +22,7 @@
 
 .tags-block {
     margin-left: 120px;
-    overflow: scroll;
+    overflow: hidden;
     scrollbar-width: none;
 }
 

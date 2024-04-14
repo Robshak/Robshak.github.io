@@ -1,5 +1,6 @@
 .dinamic-tag {
     transition: 0.1s all;
+    user-select: none;
 }
 
 .dinamic-tag:hover {

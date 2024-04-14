@@ -40,7 +40,6 @@ function TagItem({ tag, status, track }: TagItemProps) { //FIX - вынести 
                 if (!track) {
                     return;
                 }
-                console.log(track, tag);
                 dispatch(taglistOnTrackStateActions.deleteTagOnTrack({
                     track,
                     tag

@@ -48,18 +48,18 @@ function AddTag({ track, type = "big" }: AddTagProps) {
         {type == "small" &&
             <button
                 onClick={setTags}
-                className={cn(styles["tag-button-small-wrapper"])}
+                className={cn(styles["tag-button-small-wrapper"], {
+                    [styles["tag-button-small-active"]]: popupState
+                })}
                 value={"unClicked"}>
                 <div className={styles["tag-button-small"]}>
-                    <div className={cn(styles["tag-button-small-constent"], {
-                        [styles["tag-button-active"]]: popupState
-                    })}>
+                    <div className={cn(styles["tag-button-small-constent"])}>
                         <img src="/plusIcon.svg" alt="" />
                     </div>
                 </div>
             </button>
         }
-        <Popup open={popupState} defaultOpen
+        <Popup open={popupState}
             onClose={() => setPopupState(false)}
             position="top right"
             nested

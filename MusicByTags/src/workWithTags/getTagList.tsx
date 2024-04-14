@@ -2,7 +2,7 @@ import TagItem from "../Components/Tags/TagItem/TagItem";
 import { Track } from "../interfaces/Track.interface";
 import { Tag } from "../interfaces/tag.interface";
 
-export const getTagList = (allTags: Tag[], favorites: Tag[], track: Track) => {
+export const getTagList = (allTags: Tag[], favorites: Tag[], track?: Track) => {
     if (!allTags) {
         return;
     }

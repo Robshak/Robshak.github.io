@@ -100,3 +100,7 @@
     width: 15px;
     height: 15px;
 }
+
+.tag-button-small-active {
+    filter: brightness(75%);
+}

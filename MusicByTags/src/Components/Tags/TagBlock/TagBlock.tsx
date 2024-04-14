@@ -11,7 +11,7 @@ import { taglistOnTrackStateActions } from "../../../Store/TagsSlices/tagListOnT
 import { taglistActions } from "../../../Store/TagsSlices/tagList.slice";
 import { openTagsNowStateActions } from "../../../Store/TagsSlices/openTagNow.slice";
 
-function TagBlock({ tag, track, className, ...props }: TagBlockProps) {
+function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
     const dispatch = useDispatch<AppDispatch>();
     const { setContextMenu } = useContextMenu();
     const [openReworkPopup, setOpenReworkPopup] = useState<boolean>(false);
@@ -56,13 +56,28 @@ function TagBlock({ tag, track, className, ...props }: TagBlockProps) {
         setContextMenu(contextMenu, { x: clientX, y: clientY } as ContextMenuPosition, tag.private);
     }, [setContextMenu, contextMenu, tag.private]);
 
+    const onClick = (e: MouseEvent) => {
+        setOpenReworkPopup(true);
+        e.stopPropagation();
+    };
+
     return <>
-        <div className={styles["wrapper"]} {...props}
-            onContextMenu={handleContextMenu}>
-            <div className={cn(styles["tag"], className)} style={{ backgroundColor: tag.color }}>
-                <div className={styles["tag-text"]}>{tag.name}</div>
+        {mini &&
+            <div className={styles["wrapper"]} {...props}
+                onContextMenu={handleContextMenu}
+                onClick={onClick}>
+                <div className={cn(styles["tag"], className)} style={{ backgroundColor: tag.color }}>
+                    <div className={styles["tag-text"]}>{tag.name}</div>
+                </div>
             </div>
-        </div>
+        }
+        {!mini &&
+            <div className={styles["wrapper"]} {...props}>
+                <div className={cn(styles["tag"], className)} style={{ backgroundColor: tag.color }}>
+                    <div className={styles["tag-text"]}>{tag.name}</div>
+                </div>
+            </div>
+        }
         {openReworkPopup && <TagSettingPopup
             reworkTag={tag}
             onClose={() => setOpenReworkPopup(false)}

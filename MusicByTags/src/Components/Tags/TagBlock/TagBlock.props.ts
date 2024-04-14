@@ -3,7 +3,8 @@ import { Tag } from "../../../interfaces/tag.interface";
 import { Track } from "../../../interfaces/Track.interface";
 
 export interface TagBlockProps extends HTMLAttributes<HTMLDivElement> {
-    tag: Tag,
-    className?: string
-    track?: Track
+    tag: Tag;
+    mini?: boolean;
+    className?: string;
+    track?: Track;
 }

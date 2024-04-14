@@ -7,8 +7,8 @@ import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
 import { PlayerActions } from "../../../Store/CurrentTrackStateSlices/playerManager.slice";
 import AddTag from "../../Tags/AddTag/AddTag";
-import Popup from "reactjs-popup";
 import TagBlock from "../../Tags/TagBlock/TagBlock";
+import { MouseEvent } from "react";
 
 function TrackItem({ track, list, className, index, focusActive }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
@@ -38,6 +38,11 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
         }
     };
 
+    const clickToButton = (e: MouseEvent) => {
+        playTrack();
+        e.stopPropagation();
+    };
+
     const setAnimation = currentTrack?.previewUrl == track.previewUrl && activeManager.active;
 
     return <Reorder.Item
@@ -47,7 +52,7 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
             [styles["focus-track"]]: focusActive
         })}>
         <div className={styles["track-block"]}>
-            <div className={styles["start-block"]} onClick={playTrack}>
+            <div className={styles["start-block"]} onClick={clickToButton}>
                 {setAnimation && <div className={styles["animation"]}>
                     <div className={styles["stroke"]}></div>
                     <div className={styles["stroke"]}></div>
@@ -67,14 +72,6 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
             <div className={styles["album"]}>
                 {track.album}
             </div>
-            <Popup
-                trigger={<div className={styles["count-tags"]}>{track.tags?.length ?? 0}</div>}
-                on={["hover"]}
-                position={"top center"}
-            >
-                <div className={styles["count-tags-popup"]}>Count of tags on this track</div>
-            </Popup>
-            {track ? <AddTag track={track}></AddTag> : <></>}
             <div className={styles["time"]}>
                 {track.durationText}
             </div>
@@ -84,6 +81,7 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
                 {track.tags.map((tg, index) => {
                     return <TagBlock
                         key={index}
+                        mini
                         tag={tg}
                         className={styles["mini-tag"]}
                         track={track}

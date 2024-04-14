@@ -97,7 +97,8 @@ function DynamicTagItem({ currentDynamicTag }: DynamicTagProps) {
             {currentDynamicTag.tags.length &&
                 <TagBlock tag={{
                     color: currentColor,
-                    name: dynamicTagToString(currentTags)
+                    name: dynamicTagToString(currentTags),
+                    private: false
                 }}
                     onClick={addTagPopupOpen}
                     onContextMenu={handleContextMenu}

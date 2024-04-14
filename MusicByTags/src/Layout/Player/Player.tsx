@@ -9,6 +9,7 @@ import { volumeManagerActions } from "../../Store/CurrentTrackStateSlices/volume
 import { activeManagerActions } from "../../Store/CurrentTrackStateSlices/activeManager.slice";
 import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 import { currentFocusActions } from "../../Store/CurrentTrackStateSlices/currentMouseFocus.slice";
+import Popup from "reactjs-popup";
 
 const PRIMARY_COLOR = "F178B6";
 const WHITE_COLOR = "fff";
@@ -250,6 +251,7 @@ function Player() {
                 </button>
             </div>
         </footer>
+        <Popup defaultOpen open={false} children={undefined}></Popup>
     </>;
 }
 
