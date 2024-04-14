@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Robshak.github.io/test-taglist-page",
+  "homepage": "https://Robshak.github.io/Taglist",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
