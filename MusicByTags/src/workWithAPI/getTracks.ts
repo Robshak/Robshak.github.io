@@ -43,7 +43,8 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
                 durationText: durationToText(30000),
                 artists: data.artists.map(artist => artist.name).join(", "),
                 previewUrl: data.preview_url,
-                album: data.album.name
+                album: data.album.name,
+                tags: []
             };
             return completeTrack;
         }
