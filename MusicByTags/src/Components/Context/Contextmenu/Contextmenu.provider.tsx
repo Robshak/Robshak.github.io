@@ -14,6 +14,9 @@ export const ContextMenuProvider: FC<PropsWithChildren<object>> = ({ children })
         if (block != undefined) {
             setBlockState(block);
         }
+        else {
+            setBlockState(false);
+        }
     }, []);
 
     const closeMenu = useCallback(() => {

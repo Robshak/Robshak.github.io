@@ -10,7 +10,7 @@ import { openTagsNowStateActions } from "../../../Store/TagsSlices/openTagNow.sl
 import { ContextMenuPosition } from "../../Context/Contextmenu/Contextmenu.context";
 import { getTagList } from "../../../workWithTags/getTagList";
 
-function AddTag({ track }: AddTagProps) {
+function AddTag({ track, type = "big" }: AddTagProps) {
     const dispatch = useDispatch<AppDispatch>();
     const allTags = useSelector((s: RootState) => s.tagList);
     const [popupState, setPopupState] = useState(false);
@@ -31,15 +31,34 @@ function AddTag({ track }: AddTagProps) {
     };
 
     return <>
-        <button onClick={setTags} className={styles["tag-button-wrapper"]} value={"unClicked"}>
-            <div className={styles["tag-button"]}>
-                <div className={cn(styles["tag-button-text"], {
-                    [styles["tag-button-active"]]: popupState
-                })}>
-                    Add tags
+        {type == "big" &&
+            <button
+                onClick={setTags}
+                className={cn(styles["tag-button-wrapper"])}
+                value={"unClicked"}>
+                <div className={styles["tag-button"]}>
+                    <div className={cn(styles["tag-button-text"], {
+                        [styles["tag-button-active"]]: popupState
+                    })}>
+                        Tags
+                    </div>
                 </div>
-            </div>
-        </button>
+            </button>
+        }
+        {type == "small" &&
+            <button
+                onClick={setTags}
+                className={cn(styles["tag-button-small-wrapper"])}
+                value={"unClicked"}>
+                <div className={styles["tag-button-small"]}>
+                    <div className={cn(styles["tag-button-small-constent"], {
+                        [styles["tag-button-active"]]: popupState
+                    })}>
+                        <img src="/plusIcon.svg" alt="" />
+                    </div>
+                </div>
+            </button>
+        }
         <Popup open={popupState} defaultOpen
             onClose={() => setPopupState(false)}
             position="top right"
@@ -57,7 +76,7 @@ function AddTag({ track }: AddTagProps) {
                         Add tag
                     </div>
                     <div className={styles["body"]}>
-                        {getTagList(allTags.tags, track.tags)}
+                        {getTagList(allTags.tags, track.tags, track)}
                     </div>
                     <CreateTag track={track} closePopup={() => setPopupState(false)}></CreateTag>
                 </div>

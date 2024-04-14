@@ -1,7 +1,8 @@
 import TagItem from "../Components/Tags/TagItem/TagItem";
+import { Track } from "../interfaces/Track.interface";
 import { Tag } from "../interfaces/tag.interface";
 
-export const getTagList = (allTags: Tag[], favorites: Tag[]) => {
+export const getTagList = (allTags: Tag[], favorites: Tag[], track: Track) => {
     if (!allTags) {
         return;
     }
@@ -9,7 +10,7 @@ export const getTagList = (allTags: Tag[], favorites: Tag[]) => {
     let have: JSX.Element[] = [];
     if (tags) {
         have = tags.map(t => {
-            return <TagItem key={t.name} tag={t} status={true}></TagItem>;
+            return <TagItem key={t.name} tag={t} status={true} track={track}></TagItem>;
         });
     }
     const havent = allTags

@@ -8,7 +8,7 @@ export const defaultTags: Tag[] = [
     {
         name: "Like",
         color: "#51BA4A",
-        private: true
+        private: false
     }
 ];
 

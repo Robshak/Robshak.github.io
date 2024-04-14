@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import styles from "./TrackList.module.css";
 import { RootState } from "../../../Store/store";
-import TrackItem from "../Track/Track";
 import { Reorder, motion } from "framer-motion";
 import { TrackListProps } from "./TrackList.props";
+import TrackItem from "../Track/Track";
 
 function TrackList({ head, list, changerList }: TrackListProps) {
     const focusTrack = useSelector((s: RootState) => s.currentFocus);

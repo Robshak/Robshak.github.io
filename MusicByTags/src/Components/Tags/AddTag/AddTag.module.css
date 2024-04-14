@@ -78,3 +78,25 @@
 .body::-webkit-scrollbar {
     display: none;
 }
+
+.tag-button-small-wrapper {
+    background: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.tag-button-small-wrapper:hover {
+    filter: brightness(75%);
+}
+
+.tag-button-small-constent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tag-button-small-constent img {
+    width: 15px;
+    height: 15px;
+}

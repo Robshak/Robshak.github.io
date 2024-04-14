@@ -36,9 +36,10 @@ function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, o
         if (color.value) {
             if (reworkTag) {
                 if (!tags.find(tg => tg.name == tagName.value)) {
-                    const newValue = {
+                    const newValue: Tag = {
                         name: (tagName.value.length ? tagName.value : reworkTag.name),
-                        color: color.value
+                        color: color.value,
+                        private: false
                     };
                     dispatch(taglistOnTrackStateActions.reworkTagOnAllTracks({
                         tagName: reworkTag.name,
@@ -51,7 +52,7 @@ function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, o
                 }
             }
             else {
-                dispatch(taglistActions.addTag({ name: tagName.value, color: color.value }));
+                dispatch(taglistActions.addTag({ name: tagName.value, color: color.value } as Tag));
             }
             setOpenState(false);
         }
@@ -75,6 +76,7 @@ function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, o
                     autoComplete="off"
                     ref={inputElement}
                     placeholder={reworkTag?.name ?? "Chose tag name"}
+                    maxLength={15}
                     type="text" name="tagName" id="tagName" className={styles["chose-name"]}
                 />
             </div>
