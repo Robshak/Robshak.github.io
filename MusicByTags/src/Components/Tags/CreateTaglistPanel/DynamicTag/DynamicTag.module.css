@@ -1,0 +1,16 @@
+.dinamic-tag {
+    transition: 0.1s all;
+}
+
+.dinamic-tag:hover {
+    scale: 1.1;
+}
+
+.dinamic-tag:active {
+    filter: brightness(90%);
+    scale: 1.05;
+}
+
+.active {
+    scale: 1.1;
+}

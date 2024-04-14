@@ -4,7 +4,11 @@
 
 :root {
   --background-color-main: #181818;
+  --background-color-create-panel: #111111;
   --background-color-popup: #2d2d2d;
+  --background-color-contextmenu: #242424;
+  --hover-color-contextmenu: #2d2d2d;
+  --active-color-contextmenu: #424242;
   --extractor-lvl1-color: rgba(255, 255, 255, 0.03);
   --extractor-lvl2-color: rgba(255, 255, 255, 0.07);
   --extractor-black-lvl1-color: rgba(0, 0, 0, 0.1);
@@ -13,6 +17,7 @@
   --text-secondary-color: #a7a7a7;
   --primary-dark-color: #EF5DA8;
   --primary-color: #F178B6;
+  --primary-2-color: rgba(241, 120, 182, 0.02);
   --primary-10-color: rgba(241, 120, 182, 0.1);
   --primary-20-color: rgba(241, 120, 182, 0.2);
   --primary-light-color: #FF98CA;

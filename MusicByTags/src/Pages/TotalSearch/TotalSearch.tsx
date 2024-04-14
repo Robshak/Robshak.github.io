@@ -5,13 +5,13 @@ import styles from "./TotalSearch.module.css";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../Store/store";
 import { FormEvent } from "react";
-import TrackList from "../../Components/TrackList/TrackList";
+import TrackList from "../../Components/Tracks/TrackList/TrackList";
 import { getTOKEN } from "../../workWithAPI/getTOKEN";
 import { Track } from "../../interfaces/Track.interface";
 import { AxiosError } from "axios";
 import { searchAPI } from "../../workWithAPI/searchAPI";
 import { List } from "../../interfaces/list.interface";
-import { PlayerActions } from "../../Store/playerManager.slice";
+import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
@@ -48,9 +48,6 @@ function TotalSearch() {
             tags: []
         };
         list.tracks = list.tracks.filter(t => t);
-        // list.tracks = list.tracks.map(tr => {
-        //     return tracks.find(tr2 => tr2.id == tr.id) ?? { ...tr, tags: [] };
-        // });
         dispatch(PlayerActions.pushList(list));
     };
 
@@ -62,7 +59,7 @@ function TotalSearch() {
                     autoFocus onChange={onSearch}></SearchInput>
                 <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Create playlist</MenuButton>
             </div>
-            <TrackList tags={[]}></TrackList>
+            <TrackList tags={[]} head={<></>}></TrackList>
         </div>
     );
 }

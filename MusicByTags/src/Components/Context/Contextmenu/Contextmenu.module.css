@@ -1,14 +1,28 @@
 .context-menu {
     position: absolute;
-    background-color: var(--background-color-main);
+    background-color: var(--background-color-contextmenu);
     border: 2px solid var(--border-dark-color);
     border-radius: 5px;
     padding: 5px;
     z-index: 10;
 }
 
+.block * {
+    pointer-events: none;
+    user-select: none !important;
+    color: var(--text-secondary-color) !important;
+}
+
+.block *:hover,
+.block *:active {
+    background: none !important;
+}
+
 .context-menu-item {
+    text-wrap: nowrap;
     color: var(--text-color);
+    min-width: 100px;
+    text-align: center;
     font-size: 14px;
     line-height: 30px;
     padding: 2px;
@@ -17,9 +31,9 @@
 }
 
 .context-menu-item:hover {
-    background-color: var(--background-color-popup);
+    background-color: var(--hover-color-contextmenu);
 }
 
 .context-menu-item:active {
-    background-color: #424242;
+    background-color: var(--active-color-contextmenu);
 }

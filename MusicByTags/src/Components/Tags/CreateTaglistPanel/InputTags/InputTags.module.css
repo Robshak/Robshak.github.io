@@ -1,0 +1,42 @@
+.input-tags {
+    align-items: center;
+}
+
+.input-list {
+    display: flex;
+    gap: 10px;
+}
+
+.add-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    background: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 7px;
+    transition: 0.1s all;
+}
+
+.add-button img {
+    width: 15px;
+    height: 15px;
+}
+
+.add-button:hover {
+    background-color: var(--primary-20-color);
+}
+
+.add-button:hover {
+    scale: 1.1;
+}
+
+.add-button:active {
+    filter: brightness(90%);
+    scale: 1.05;
+}
+
+.active {
+    background-color: var(--primary-20-color);
+    scale: 1.1;
+}

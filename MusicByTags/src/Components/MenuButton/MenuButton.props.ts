@@ -1,7 +1,8 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
 export interface IMenuButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    img: string;
+    img?: string;
     children: ReactNode;
     active: boolean;
+    className?: string;
 }

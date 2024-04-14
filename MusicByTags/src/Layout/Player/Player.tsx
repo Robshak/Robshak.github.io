@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import cn from "classnames";
 import { durationToText } from "../../workWithAPI/getTracks";
 import { Outlet } from "react-router-dom";
-import { volumeManagerActions } from "../../Store/volumeManage.slice";
-import { activeManagerActions } from "../../Store/activeManager.slice";
-import { CMP, PlayerActions } from "../../Store/playerManager.slice";
-import { currentFocusActions } from "../../Store/currentMouseFocus.slice";
+import { volumeManagerActions } from "../../Store/CurrentTrackStateSlices/volumeManage.slice";
+import { activeManagerActions } from "../../Store/CurrentTrackStateSlices/activeManager.slice";
+import { CMPDynamicTags, PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
+import { currentFocusActions } from "../../Store/CurrentTrackStateSlices/currentMouseFocus.slice";
 
 const PRIMARY_COLOR = "F178B6";
 const WHITE_COLOR = "fff";
@@ -124,7 +124,7 @@ function Player() {
         if (!currentTrack) {
             return;
         }
-        const currentList = lists.find(l => CMP(l.tags, currentTags));
+        const currentList = lists.find(l => CMPDynamicTags(l.tags, currentTags));
         if (!currentList) {
             return;
         }

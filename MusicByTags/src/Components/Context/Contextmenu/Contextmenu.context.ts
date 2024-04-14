@@ -11,7 +11,7 @@ export interface ContextMenuItem {
 }
 
 interface ContextMenuModel {
-    setContextMenu?: (items: ContextMenuItem[], position: ContextMenuPosition) => void;
+    setContextMenu?: (items: ContextMenuItem[], position: ContextMenuPosition, block?: boolean) => void;
 }
 
 export const ContextMenu = createContext<ContextMenuModel>({

@@ -1,0 +1,25 @@
+.histopry-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-list {
+    display: flex;
+    padding: 5px 5px 5px 20px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.history-list * {
+    pointer-events: none;
+    user-select: none
+}
+
+.history-list:hover {
+    background-color: var(--primary-10-color);
+}
+
+.history-list:active {
+    background-color: var(--primary-20-color);
+}
