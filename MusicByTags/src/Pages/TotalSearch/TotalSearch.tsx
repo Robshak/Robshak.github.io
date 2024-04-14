@@ -38,10 +38,11 @@ function TotalSearch() {
     };
 
     const onSearch = async (e: FormEvent<HTMLInputElement>) => {
-        const data = await createSearch({ searchString: e.currentTarget.value });
+        let data = await createSearch({ searchString: e.currentTarget.value });
         if (!data) {
             return;
         }
+        data = data.filter(tr => tr);
         dispatch(PlayerActions.setSearchList(data as Track[]));
     };
 
