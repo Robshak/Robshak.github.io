@@ -4,15 +4,25 @@ import MenuButton from "../../Components/MenuButton/MenuButton";
 import styles from "./CreatePlaylist.module.css";
 import TrackList from "../../Components/Tracks/TrackList/TrackList";
 import CreateTaglistPanel from "../../Components/Tags/CreateTaglistPanel/CreateTaglistPanel";
-import { useSelector } from "react-redux";
-import { RootState } from "../../Store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../Store/store";
+import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
+import { Track } from "../../interfaces/Track.interface";
 
 function CreatePlaylist() {
+    const dispatch = useDispatch<AppDispatch>();
     const naviaget = useNavigate();
-    const { dynamicTags } = useSelector((s: RootState) => s.currentDynamicTags);
+    const { createList, currentList } = useSelector((s: RootState) => s.player);
 
     const changePage = () => {
         naviaget("/");
+    };
+
+    const changeList = (newValue: Track[]) => {
+        if (currentList == createList) {
+            dispatch(PlayerActions.setCurrentList(newValue));
+        }
+        dispatch(PlayerActions.setCreateList(newValue));
     };
 
     return (
@@ -21,7 +31,9 @@ function CreatePlaylist() {
                 <MenuButton onClick={changePage} img="/searchIcon.svg" active={false}>Search</MenuButton>
                 <MenuButton img="/playlist.svg" active={true}>Create playlist</MenuButton>
             </div>
-            <TrackList tags={dynamicTags}
+            <TrackList
+                list={createList}
+                changerList={changeList}
                 head={<CreateTaglistPanel></CreateTaglistPanel>}
             >
             </TrackList>

@@ -2,21 +2,20 @@ import { useNavigate } from "react-router-dom";
 import MenuButton from "../../Components/MenuButton/MenuButton";
 import SearchInput from "../../Components/SearchInput/SearchInput";
 import styles from "./TotalSearch.module.css";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../Store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../Store/store";
 import { FormEvent } from "react";
 import TrackList from "../../Components/Tracks/TrackList/TrackList";
 import { getTOKEN } from "../../workWithAPI/getTOKEN";
 import { Track } from "../../interfaces/Track.interface";
 import { AxiosError } from "axios";
 import { searchAPI } from "../../workWithAPI/searchAPI";
-import { List } from "../../interfaces/list.interface";
 import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
     const naviaget = useNavigate();
-    // const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
+    const { searchtList, currentList } = useSelector((s: RootState) => s.player);
 
     getTOKEN();
 
@@ -43,12 +42,14 @@ function TotalSearch() {
         if (!data) {
             return;
         }
-        const list: List = {
-            tracks: data as Track[],
-            tags: []
-        };
-        list.tracks = list.tracks.filter(t => t);
-        dispatch(PlayerActions.pushList(list));
+        dispatch(PlayerActions.setSearchList(data as Track[]));
+    };
+
+    const changeList = (newValue: Track[]) => {
+        if (currentList == searchtList) {
+            dispatch(PlayerActions.setCurrentList(newValue));
+        }
+        dispatch(PlayerActions.setSearchList(newValue));
     };
 
     return (
@@ -59,7 +60,7 @@ function TotalSearch() {
                     autoFocus onChange={onSearch}></SearchInput>
                 <MenuButton onClick={changePage} img="/playlist.svg" active={false}>Create playlist</MenuButton>
             </div>
-            <TrackList tags={[]} head={<></>}></TrackList>
+            <TrackList list={searchtList} changerList={changeList} head={<></>}></TrackList>
         </div>
     );
 }

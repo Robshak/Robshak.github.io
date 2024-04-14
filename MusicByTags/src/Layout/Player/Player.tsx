@@ -7,7 +7,7 @@ import { durationToText } from "../../workWithAPI/getTracks";
 import { Outlet } from "react-router-dom";
 import { volumeManagerActions } from "../../Store/CurrentTrackStateSlices/volumeManage.slice";
 import { activeManagerActions } from "../../Store/CurrentTrackStateSlices/activeManager.slice";
-import { CMPDynamicTags, PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
+import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 import { currentFocusActions } from "../../Store/CurrentTrackStateSlices/currentMouseFocus.slice";
 
 const PRIMARY_COLOR = "F178B6";
@@ -21,8 +21,7 @@ function Player() {
     const [needUpdateProgressBar, setNeedUpdateProgressBar] = useState<boolean>(true);
     const [cycleState, setCycleState] = useState<boolean>(false);
     const currentTrack = useSelector((s: RootState) => s.player.currentTrack);
-    const currentTags = useSelector((s: RootState) => s.player.currentTags);
-    const { lists } = useSelector((s: RootState) => s.player);
+    const { currentList } = useSelector((s: RootState) => s.player);
     const volumeManager = useSelector((s: RootState) => s.volumeManager);
     const activeManager = useSelector((s: RootState) => s.activeManager);
 
@@ -124,16 +123,15 @@ function Player() {
         if (!currentTrack) {
             return;
         }
-        const currentList = lists.find(l => CMPDynamicTags(l.tags, currentTags));
         if (!currentList) {
             return;
         }
         let currentId = -1;
-        for (let i = 0; i < currentList.tracks.length; i++) {
-            if (!currentList.tracks[i]) {
+        for (let i = 0; i < currentList.length; i++) {
+            if (!currentList[i]) {
                 continue;
             }
-            if (currentTrack.id == currentList.tracks[i].id) {
+            if (currentTrack.id == currentList[i].id) {
                 currentId = i;
                 break;
             }
@@ -142,10 +140,10 @@ function Player() {
             return;
         }
         currentId += plus;
-        if (currentId >= currentList.tracks.length || currentId < 0) {
+        if (currentId >= currentList.length || currentId < 0) {
             currentId = 0;
         }
-        return currentList.tracks[currentId];
+        return currentList[currentId];
     };
 
     const goNext = () => {
@@ -154,10 +152,7 @@ function Player() {
             return;
         }
 
-        dispatch(PlayerActions.setTrack({
-            track: newTrack,
-            tags: currentTags
-        }));
+        dispatch(PlayerActions.setTrack(newTrack));
     };
 
     const goPrev = () => {
@@ -173,10 +168,7 @@ function Player() {
                 return;
             }
 
-            dispatch(PlayerActions.setTrack({
-                track: newTrack,
-                tags: currentTags
-            }));
+            dispatch(PlayerActions.setTrack(newTrack));
         }
     };
 

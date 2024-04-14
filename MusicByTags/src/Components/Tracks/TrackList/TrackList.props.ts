@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { DynamicTag } from "../../../Store/TagsSlices/currentDynamicTags";
+import { Track } from "../../../interfaces/Track.interface";
 
 export interface TrackListProps {
-    tags: DynamicTag[];
+    changerList: (newValue: Track[]) => void;
     head: ReactNode;
+    list: Track[]
 }

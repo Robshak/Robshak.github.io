@@ -7,7 +7,6 @@ import cn from "classnames";
 import { AppDispatch, RootState } from "../../../Store/store";
 import { CurrentDynamicTagsStateActions } from "../../../Store/TagsSlices/currentDynamicTags";
 import { HistoryDynamicTagsStateActions } from "../../../Store/TagsSlices/dynamicTagsHistory";
-import { List } from "../../../interfaces/list.interface";
 import { Tag } from "../../../interfaces/tag.interface";
 import { PlayerActions } from "../../../Store/CurrentTrackStateSlices/playerManager.slice";
 
@@ -34,23 +33,18 @@ function CreateTaglistPanel() {
         if (!dynamicTags.length) {
             return;
         }
-        const newList: List = {
-            tracks: tracks.filter(tr => {
-                for (const dtg of dynamicTags) {
-                    // console.log(dtg.tags, tr.tags);
-                    if (contains(tr.tags, dtg.tags)) {
-                        return true;
-                    }
+        const newList = tracks.filter(tr => {
+            for (const dtg of dynamicTags) {
+                // console.log(dtg.tags, tr.tags);
+                if (contains(tr.tags, dtg.tags)) {
+                    return true;
                 }
+            }
 
-                return false;
-            }),
-            tags: dynamicTags
-        };
-        // console.log(newList);
+            return false;
+        });
         dispatch(HistoryDynamicTagsStateActions.addDynamicTags(dynamicTags));
-        dispatch(PlayerActions.pushList(newList));
-        dispatch(CurrentDynamicTagsStateActions.setDynamicTags(dynamicTags));
+        dispatch(PlayerActions.setCreateList(newList));
     };
 
     return (

@@ -9,7 +9,7 @@ import { PlayerActions } from "../../../Store/CurrentTrackStateSlices/playerMana
 import AddTag from "../../Tags/AddTag/AddTag";
 import Popup from "reactjs-popup";
 
-function TrackItem({ track, tags, className, index, focusActive }: TrackItemProps) {
+function TrackItem({ track, list, className, index, focusActive }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
     const currentTrack = useSelector((s: RootState) => s.player.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
@@ -22,10 +22,8 @@ function TrackItem({ track, tags, className, index, focusActive }: TrackItemProp
 
     const playTrack = () => {
         if (currentTrack?.previewUrl != track.previewUrl) {
-            dispatch(PlayerActions.setTrack({
-                track,
-                tags
-            }));
+            dispatch(PlayerActions.setTrack(track));
+            dispatch(PlayerActions.setCurrentList(list));
             dispatch(activeManagerActions.setActive(true));
         }
         else {
