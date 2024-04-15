@@ -1,0 +1,27 @@
+.tags-block {
+    margin-left: 120px;
+    overflow: hidden;
+    scrollbar-width: none;
+}
+
+.tags-block,
+.favorites-tags {
+    margin-right: auto;
+    display: flex;
+    gap: 5px;
+}
+
+.favorites-tags {
+    max-width: 580px;
+    overflow: hidden;
+    width: 100%;
+    background: none;
+}
+
+.mini-tag {
+    font-size: 10px;
+}
+
+.mini-tag:hover {
+    filter: brightness(75%);
+}

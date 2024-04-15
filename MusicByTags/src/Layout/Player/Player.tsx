@@ -10,6 +10,7 @@ import { activeManagerActions } from "../../Store/CurrentTrackStateSlices/active
 import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 import { currentFocusActions } from "../../Store/CurrentTrackStateSlices/currentMouseFocus.slice";
 import Popup from "reactjs-popup";
+import Taglist from "../../Components/Tags/Taglist/Taglist";
 
 // Colors for painting the progress bar
 const PRIMARY_COLOR = "F178B6";
@@ -27,6 +28,9 @@ function Player() {
     const { currentList } = useSelector((s: RootState) => s.player);
     const volumeManager = useSelector((s: RootState) => s.volumeManager);
     const activeManager = useSelector((s: RootState) => s.activeManager);
+    const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
+
+    const trackWithTags = tracks.find(tr => tr.id == currentTrack?.id) ?? currentTrack;
 
     // start the audio player
     const audioPlayer = useRef<HTMLAudioElement>(null);
@@ -194,7 +198,7 @@ function Player() {
     // try to get the track
     const getTrackObject = (e: any) => {
         let res = e.target;
-        while (!res.id && res.parentElement && !(res.value == "unClicked")) {
+        while (!res.id && res.parentElement && !(res.id == "unClicked")) {
             res = res.parentElement;
         }
         return res?.id as string;
@@ -214,59 +218,66 @@ function Player() {
             onEnded={goNext}></audio>
         <Outlet></Outlet>
         <footer className={styles["player"]}>
-            <div className={styles["left-part"]}>
-                <img className={styles["track-info-img"]} src={currentTrack?.img ?? "/trackWithouImgIcon.svg"} alt="track img" />
-                <div className={styles["track-info-text"]}>
-                    <div className={styles["track-name"]}>{currentTrack?.name}</div>
-                    <div className={styles["track-author"]}>{currentTrack?.artists}</div>
+            <div className={styles["top-part"]}>
+                <div className={styles["left-part"]}>
+                    <img className={styles["track-info-img"]} src={currentTrack?.img ?? "/trackWithouImgIcon.svg"} alt="track img" />
+                    <div className={styles["track-info-text"]}>
+                        <div className={styles["track-name"]}>{currentTrack?.name}</div>
+                        <div className={styles["track-author"]}>{currentTrack?.artists}</div>
+                    </div>
+                    <div className={styles["track-tags"]}></div>
                 </div>
-                <div className={styles["track-tags"]}></div>
+                <div className={styles["center-part"]}>
+                    <div className={styles["center-buttons"]}>
+                        <button onClick={goPrev} className={cn(styles["prev"], styles["center-button"])}>
+                            <img src="/nextPrevIcon.svg" alt="" />
+                        </button>
+                        <button onClick={playTrack} className={cn(styles["play-pause"], styles["center-button"])}>
+                            {!activeManager.active && <img src="/footerPlayIcon.svg" alt="" />}
+                            {activeManager.active && <img src="/pauseIcon.svg" alt="" />}
+                        </button>
+                        <button onClick={goNext} className={cn(styles["next"], styles["center-button"])}>
+                            <img src="/nextPrevIcon.svg" alt="" />
+                        </button>
+                        <button onClick={onCycle} className={cn(styles["cycle"], styles["center-button"], {
+                            [styles["active-cycle"]]: cycleState
+                        })}>
+                            <img src="/loop.svg" alt="" />
+                        </button>
+                    </div>
+                    <div className={styles["timeline"]}>
+                        <div className={styles["current-position"]}>{currentPosition ? durationToText(currentPosition * 10) : "--:--"}</div>
+                        <input type="range" min={0} max={currentTrack?.durationMs ? currentTrack.durationMs / 1000 * 100 : 0} className={styles["border-line"]}
+                            value={currentPosition} onChange={changeProgressBar}
+                            onMouseOver={progressBarHover} onMouseOut={progressBarUnhover}
+                            onMouseDown={stopUdateProgressBar} onMouseUp={startUdateProgressBar}
+                            style={{ background: `linear-gradient(to right, #${progressBarColor} ${progressBarToProcent}%, #301322 ${progressBarToProcent}%)` }} />
+                        <div className={styles["track-len"]}>{currentTrack?.durationMs ? durationToText(currentTrack.durationMs) : "--:--"}</div>
+                    </div>
+                </div>
+                <div className={styles["right-part"]}>
+                    <div className={styles["volume-block"]}
+                        onMouseOver={volumeBarHover} onMouseOut={volumeBarUnhover}>
+                        <button onClick={toggleMute} className={cn(styles["volume-button"], {
+                            [styles["audio-lvl0"]]: volumeManager.volume == 0,
+                            [styles["audio-lvl1"]]: 0 < volumeManager.volume && volumeManager.volume < 0.33,
+                            [styles["audio-lvl2"]]: 0.33 <= volumeManager.volume && volumeManager.volume < 0.66,
+                            [styles["audio-lvl3"]]: 0.66 <= volumeManager.volume && volumeManager.volume
+                        })}>
+                            <img src="" alt="" />
+                        </button>
+                        <input type="range" className={styles["volume-line"]}
+                            min={0} max={100} value={volumeManager.volume * 100} onChange={changeVolume}
+                            style={{ background: `linear-gradient(to right, #${volumeBarColor} ${volumeBarToProcent}%, #301322 ${volumeBarToProcent}%)` }} />
+                    </div>
+                </div>
             </div>
-            <div className={styles["center-part"]}>
-                <div className={styles["center-buttons"]}>
-                    <button onClick={goPrev} className={cn(styles["prev"], styles["center-button"])}>
-                        <img src="/nextPrevIcon.svg" alt="" />
-                    </button>
-                    <button onClick={playTrack} className={cn(styles["play-pause"], styles["center-button"])}>
-                        {!activeManager.active && <img src="/footerPlayIcon.svg" alt="" />}
-                        {activeManager.active && <img src="/pauseIcon.svg" alt="" />}
-                    </button>
-                    <button onClick={goNext} className={cn(styles["next"], styles["center-button"])}>
-                        <img src="/nextPrevIcon.svg" alt="" />
-                    </button>
-                    <button onClick={onCycle} className={cn(styles["cycle"], styles["center-button"], {
-                        [styles["active-cycle"]]: cycleState
-                    })}>
-                        <img src="/loop.svg" alt="" />
-                    </button>
-                </div>
-                <div className={styles["timeline"]}>
-                    <div className={styles["current-position"]}>{currentPosition ? durationToText(currentPosition * 10) : "--:--"}</div>
-                    <input type="range" min={0} max={currentTrack?.durationMs ? currentTrack.durationMs / 1000 * 100 : 0} className={styles["border-line"]}
-                        value={currentPosition} onChange={changeProgressBar}
-                        onMouseOver={progressBarHover} onMouseOut={progressBarUnhover}
-                        onMouseDown={stopUdateProgressBar} onMouseUp={startUdateProgressBar}
-                        style={{ background: `linear-gradient(to right, #${progressBarColor} ${progressBarToProcent}%, #301322 ${progressBarToProcent}%)` }} />
-                    <div className={styles["track-len"]}>{currentTrack?.durationMs ? durationToText(currentTrack.durationMs) : "--:--"}</div>
-                </div>
-            </div>
-            <div className={styles["right-part"]}>
-                <div className={styles["volume-block"]}
-                    onMouseOver={volumeBarHover} onMouseOut={volumeBarUnhover}>
-                    <button onClick={toggleMute} className={cn(styles["volume-button"], {
-                        [styles["audio-lvl0"]]: volumeManager.volume == 0,
-                        [styles["audio-lvl1"]]: 0 < volumeManager.volume && volumeManager.volume < 0.33,
-                        [styles["audio-lvl2"]]: 0.33 <= volumeManager.volume && volumeManager.volume < 0.66,
-                        [styles["audio-lvl3"]]: 0.66 <= volumeManager.volume && volumeManager.volume
-                    })}>
-                        <img src="" alt="" />
-                    </button>
-                    <input type="range" className={styles["volume-line"]}
-                        min={0} max={100} value={volumeManager.volume * 100} onChange={changeVolume}
-                        style={{ background: `linear-gradient(to right, #${volumeBarColor} ${volumeBarToProcent}%, #301322 ${volumeBarToProcent}%)` }} />
-                </div>
-            </div>
+            <Taglist
+                track={trackWithTags ?? undefined}
+                className={styles["player-tag-list"]}
+                maxWidth={180}></Taglist>
         </footer>
+
         <Popup defaultOpen open={false} children={undefined}></Popup>
     </>;
 }

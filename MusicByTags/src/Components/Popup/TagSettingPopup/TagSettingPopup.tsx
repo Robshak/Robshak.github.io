@@ -106,7 +106,7 @@ function TagSettingPopup({ reworkTag, track, onClose }: TagSettingPopupProps) {
                 <button
                     onClick={putAwayTag}
                     className={cn(styles["putaway-tag"], styles["button"])}
-                >Put away</button>
+                >Remove</button>
                 <button
                     className={cn(styles["create-tag"], styles["button"])}
                 >{reworkTag ? "Edit" : "Create"}</button>

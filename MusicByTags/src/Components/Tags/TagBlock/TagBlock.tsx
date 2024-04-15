@@ -38,7 +38,6 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
                 if (!track) {
                     return;
                 }
-                console.log(track, tag);
                 dispatch(taglistOnTrackStateActions.deleteTagOnTrack({
                     track,
                     tag
@@ -51,24 +50,23 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
     // Invoke context menu
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();
-        const { clientX, clientY } = e;
+        const { clientX, pageY } = e;
 
         if (!setContextMenu) {
             return;
         }
 
-        setContextMenu(contextMenu, { x: clientX, y: clientY } as ObjectPosition, tag.private);
+        setContextMenu(contextMenu, { x: clientX, y: pageY } as ObjectPosition, tag.private);
     }, [setContextMenu, contextMenu, tag.private]);
 
     // Open tag setting on click
-    const onClick = (e: MouseEvent) => {
+    const onClick = () => {
         setOpenReworkPopup(true);
-        e.stopPropagation();
     };
 
     return <>
         {mini &&
-            <div className={styles["wrapper"]} {...props}
+            <div id="unClicked" className={styles["wrapper"]} {...props}
                 onContextMenu={handleContextMenu}
                 onClick={onClick}>
                 <div className={cn(styles["tag"], className)} style={{ backgroundColor: tag.color }}>
@@ -77,7 +75,7 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
             </div>
         }
         {!mini &&
-            <div className={styles["wrapper"]} {...props}>
+            <div id="unClicked" className={styles["wrapper"]} {...props}>
                 <div className={cn(styles["tag"], className)} style={{ backgroundColor: tag.color }}>
                     <div className={styles["tag-text"]}>{tag.name}</div>
                 </div>

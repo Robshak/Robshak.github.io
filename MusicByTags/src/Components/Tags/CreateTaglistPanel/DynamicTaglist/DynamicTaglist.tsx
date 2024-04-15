@@ -31,13 +31,13 @@ function DynamicTaglist({ className, dynamicTags, historyId, ...props }: Dynamic
     // Invoke context menu
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();
-        const { clientX, clientY } = e;
+        const { clientX, pageY } = e;
 
         if (!setContextMenu) {
             return;
         }
 
-        setContextMenu(contextMenu, { x: clientX, y: clientY } as ObjectPosition);
+        setContextMenu(contextMenu, { x: clientX, y: pageY } as ObjectPosition);
     }, [setContextMenu, contextMenu]);
 
     return (

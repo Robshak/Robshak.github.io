@@ -53,13 +53,13 @@ function TagItem({ tag, status, track }: TagItemProps) {
     // Create context menu
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();
-        const { clientX, clientY } = e;
+        const { clientX, pageY } = e;
 
         if (!setContextMenu) {
             return;
         }
 
-        setContextMenu(contextMenu, { x: clientX, y: clientY } as ObjectPosition, tag.private);
+        setContextMenu(contextMenu, { x: clientX, y: pageY } as ObjectPosition, tag.private);
     }, [setContextMenu, contextMenu, tag.private]);
 
     // Add / remove tag from tag set

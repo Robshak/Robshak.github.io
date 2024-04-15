@@ -6,9 +6,8 @@ import cn from "classnames";
 import { Reorder } from "framer-motion";
 import { TrackItemProps } from "./Track.props";
 import { PlayerActions } from "../../../Store/CurrentTrackStateSlices/playerManager.slice";
-import AddTag from "../../Tags/AddTag/AddTag";
-import TagBlock from "../../Tags/TagBlock/TagBlock";
 import { MouseEvent } from "react";
+import Taglist from "../../Tags/Taglist/Taglist";
 
 // Object - track in the track list
 function TrackItem({ track, list, className, index, focusActive }: TrackItemProps) {
@@ -20,7 +19,7 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
     // Save the old track for correct drag-and-drop functionality
     // and add tags from the new track instance
     const baseTrack = track;
-    const trackWithTags = tracks.find(tr => tr.id == track.id);
+    const trackWithTags = tracks.find(tr => tr.id == track.id) ?? track;
     if (trackWithTags) {
         track = trackWithTags;
     }
@@ -84,20 +83,9 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
                 {track.durationText}
             </div>
         </div>
-        <div className={styles["tags-block"]}>
-            <div className={styles["favorites-tags"]}>
-                {track.tags.map((tg, index) => {
-                    return <TagBlock
-                        key={index}
-                        mini
-                        tag={tg}
-                        className={styles["mini-tag"]}
-                        track={track}
-                    ></TagBlock>;
-                })}
-            </div>
-            {track ? <AddTag track={track}></AddTag> : <></>}
-        </div>
+        {<Taglist
+            track={trackWithTags}
+            maxWidth={580}></Taglist>}
     </Reorder.Item>;
 }
 

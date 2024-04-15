@@ -1,13 +1,18 @@
 .player {
+    position: fixed;
     bottom: 0px;
     left: 0px;
-    position: fixed;
+    width: 100vw;
     background-color: black;
     display: flex;
-    width: 100vw;
+    flex-direction: column;
+    padding: 10px 20px 0px 20px;
+}
+
+.top-part {
+    display: flex;
     justify-content: space-between;
     height: 100px;
-    padding: 10px 20px 10px 20px;
 }
 
 .left-part {
@@ -280,4 +285,10 @@
     background-color: #fff;
     border-radius: 90%;
     border: none;
+}
+
+.player-tag-list {
+    position: absolute;
+    left: -20px;
+    top: 70px;
 }

@@ -13,6 +13,7 @@ export const ContextMenuProvider: FC<PropsWithChildren<object>> = ({ children })
     // Create contextual menus
     const setContextMenu = useCallback((items: ContextMenuItem[], position: ObjectPosition, block?: boolean) => {
         setContextMenuItems(items);
+        position.y -= 30 * items.length + 30;
         setPosition(position);
         if (block != undefined) {
             setBlockState(block);

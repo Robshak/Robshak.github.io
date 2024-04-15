@@ -40,7 +40,7 @@ function AddTag({ track }: AddTagProps) {
             className={cn(styles["tag-button-wrapper"], {
                 [styles["tag-button-active"]]: popupState
             })}
-            value={"unClicked"}>
+            id={"unClicked"}>
             <div className={styles["tag-button"]}>
                 <div className={cn(styles["tag-button-constent"])}>
                     <img src="/plusIcon.svg" alt="" />
