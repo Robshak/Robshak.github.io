@@ -1,4 +1,4 @@
-import { DynamicTag } from "../../../../Store/TagsSlices/currentDynamicTags";
+import { DynamicTag } from "../../../../interfaces/DynamicTag";
 
 export interface DynamicTagProps {
     currentDynamicTag: DynamicTag;

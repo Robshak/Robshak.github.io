@@ -3,7 +3,8 @@ import DynamicTaglist from "../DynamicTaglist/DynamicTaglist";
 import cn from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../Store/store";
-import { CurrentDynamicTagsStateActions, DynamicTag } from "../../../../Store/TagsSlices/currentDynamicTags";
+import { CurrentDynamicTagsStateActions } from "../../../../Store/TagsSlices/currentDynamicTags";
+import { DynamicTag } from "../../../../interfaces/DynamicTag";
 
 // Object - history of sets of tag lists
 function TaglistHistory({ className }: { className?: string }) {

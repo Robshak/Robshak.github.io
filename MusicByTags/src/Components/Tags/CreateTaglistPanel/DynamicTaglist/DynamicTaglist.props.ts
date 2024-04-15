@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { DynamicTag } from "../../../../Store/TagsSlices/currentDynamicTags";
+import { DynamicTag } from "../../../../interfaces/DynamicTag";
 
 export interface DynamicTaglistProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
