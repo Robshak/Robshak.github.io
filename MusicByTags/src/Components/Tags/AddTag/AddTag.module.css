@@ -1,106 +1,25 @@
 .tag-button-wrapper {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    padding: 0;
-    background: none;
-    width: 140px;
-    height: 40px;
-    transition: all 0.1s;
-}
-
-.tag-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 140px;
-    height: 40px;
-    background-color: var(--primary-color);
-    border-radius: 5px;
-}
-
-.tag-button-text {
-    width: 64%;
-    height: 64%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-color);
-    font-size: 14px;
-    background-color: #24242436;
-    padding: 5px 10px;
-    border-radius: 3px;
-    transition: all 0.3s;
-}
-
-.tag-button-wrapper:hover .tag-button-text,
-.tag-button-active {
-    transform: scale(1.5625);
-}
-
-.tag-button-wrapper:active {
-    transform: scale(0.95);
-}
-
-.tag-popup {
-    width: 260px;
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--background-color-popup);
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid var(--border-dark-color);
-}
-
-.header {
-    text-wrap: nowrap;
-    font-family: var(--font);
-    color: var(--text-color);
-    margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.body {
-    width: 100%;
-    max-height: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    overflow: scroll;
-    scrollbar-width: none;
-    margin-bottom: 20px;
-}
-
-.body::-webkit-scrollbar {
-    display: none;
-}
-
-.tag-button-small-wrapper {
     background: none;
     border: 2px solid var(--primary-color);
     border-radius: 5px;
     padding: 3px;
 }
 
-.tag-button-small-wrapper:hover {
+.tag-button-wrapper:hover {
     filter: brightness(75%);
 }
 
-.tag-button-small-constent {
+.tag-button-constent {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.tag-button-small-constent img {
+.tag-button-constent img {
     width: 15px;
     height: 15px;
 }
 
-.tag-button-small-active {
+.tag-button-active {
     filter: brightness(75%);
 }

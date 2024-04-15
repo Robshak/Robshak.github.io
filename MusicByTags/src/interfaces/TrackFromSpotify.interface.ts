@@ -1,3 +1,6 @@
+// Interface - What type does the response from the Spotify API come in for a track request
+
+
 export interface TrackFromSpotify {
     album: Album
     artists: Artist2[]

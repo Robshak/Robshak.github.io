@@ -6,7 +6,10 @@ import { taglistActions } from "../../../Store/TagsSlices/tagList.slice";
 import { AppDispatch, RootState } from "../../../Store/store";
 import { Tag } from "../../../interfaces/tag.interface";
 import { taglistOnTrackStateActions } from "../../../Store/TagsSlices/tagListOnTrack..slice";
+import cn from "classnames";
+import { TagSettingPopupProps } from "./TagSettingPopup.props";
 
+// Interface for retrieving the desired values from the form
 export type CreateTagForm = {
     tagName: {
         value: string
@@ -16,46 +19,59 @@ export type CreateTagForm = {
     }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, onClose: () => void }) {
+// Popup for tag settings
+function TagSettingPopup({ reworkTag, track, onClose }: TagSettingPopupProps) {
     const dispatch = useDispatch<AppDispatch>();
     const [openState, setOpenState] = useState(true);
     const { tags } = useSelector((s: RootState) => s.tagList);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inputElement = useRef<any>(null);
+
+    // Focus on input
     useEffect(() => {
         if (inputElement.current) {
             inputElement.current.focus();
         }
     }, []);
 
+    // Apply changes
     const submit = (e: FormEvent) => {
-        e.preventDefault();
+        e.preventDefault(); // To disable the default behavior of the form
         const target = e.target as typeof e.target & CreateTagForm;
         const { tagName, color } = target;
-        if (color.value) {
-            if (reworkTag) {
-                if (!tags.find(tg => tg.name == tagName.value)) {
-                    const newValue: Tag = {
+        if (color.value) { // If this is a correct invocation
+            if (reworkTag) { // If we are changing the tag
+                if (!tags.find(tg => tg.name == tagName.value)) { // If there is no tag with the new name
+                    const newValue: Tag = { // Create new tag
                         name: (tagName.value.length ? tagName.value : reworkTag.name),
                         color: color.value,
                         private: false
                     };
-                    dispatch(taglistOnTrackStateActions.reworkTagOnAllTracks({
+                    dispatch(taglistOnTrackStateActions.editTagOnAllTracks({ // Apply changes for all tracks
                         tagName: reworkTag.name,
                         newValue
                     }));
-                    dispatch(taglistActions.reworkTag({
+                    dispatch(taglistActions.editTag({ // Apply changes for tag list
                         tagName: reworkTag.name,
                         newValue
                     }));
                 }
             }
-            else {
-                dispatch(taglistActions.addTag({ name: tagName.value, color: color.value } as Tag));
+            else { // If just add new tag
+                dispatch(taglistActions.addTag({ name: tagName.value, color: color.value } as Tag)); // добавим его в список тегов
             }
-            setOpenState(false);
+            setOpenState(false); // Close popup
         }
+    };
+
+    // Button for removing a tag from the track
+    const putAwayTag = () => {
+        if (!reworkTag || !track) {
+            return;
+        }
+        dispatch(taglistOnTrackStateActions.deleteTagOnTrack({
+            track,
+            tag: reworkTag
+        }));
     };
 
     return <Popup open={openState}
@@ -69,7 +85,7 @@ function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, o
             <button onClick={() => { setOpenState(false); }} className={styles["cross"]}>
                 <img src="/popupCrossIcon.svg" alt="" />
             </button>
-            <div className={styles["header"]}>{reworkTag ? "Rework tag" : "Create new tag"}</div>
+            <div className={styles["header"]}>{reworkTag ? "Edit tag" : "Create new tag"}</div>
             <div className={styles["group-name"]}>
                 <label htmlFor="tagName" className={styles["group-name-text"]}>Chose name: </label>
                 <input required={reworkTag ? false : true}
@@ -86,7 +102,15 @@ function TagSettingPopup({ reworkTag: reworkTag, onClose }: { reworkTag?: Tag, o
                     defaultValue={reworkTag?.color ?? "#000"}
                 />
             </div>
-            <button className={styles["create-tag"]}>{reworkTag ? "Rework" : "Create"}</button>
+            <div className={styles["buttons"]}>
+                <button
+                    onClick={putAwayTag}
+                    className={cn(styles["putaway-tag"], styles["button"])}
+                >Put away</button>
+                <button
+                    className={cn(styles["create-tag"], styles["button"])}
+                >{reworkTag ? "Edit" : "Create"}</button>
+            </div>
         </form>
     </Popup>;
 }

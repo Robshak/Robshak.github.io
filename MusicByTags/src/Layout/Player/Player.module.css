@@ -188,6 +188,14 @@
     color: var(--text-secondary-color);
 }
 
+.right-part {
+    margin-right: 5%;
+}
+
+.volume-block {
+    margin-left: auto;
+}
+
 .right-part,
 .volume-block {
     min-width: 180px;
@@ -195,10 +203,6 @@
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.volume-block {
-    flex-grow: 1;
 }
 
 .volume-button,
@@ -244,6 +248,8 @@
     appearance: none;
 
     flex-grow: 1;
+    max-width: 170px;
+    min-width: 150px;
     width: 100%;
     height: 5px;
     border-radius: 10px;

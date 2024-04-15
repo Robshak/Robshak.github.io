@@ -21,11 +21,12 @@ const initialState: VolumeManagerState = {
     mute: loadState<VolumeManagerPersistentState>(VOLUME_MANAGER_PERSISTENT_STATE)?.mute ?? false
 };
 
+// Slice for controlling the current volume
 export const volumeManagerSlice = createSlice({
     name: "volumeManager",
     initialState,
     reducers: {
-        setVolume: (state, action: PayloadAction<number>) => {
+        setVolume: (state, action: PayloadAction<number>) => { // Set volume
             state.trueVolume = action.payload;
             state.volume = state.trueVolume;
             if (!state.trueVolume) {
@@ -35,7 +36,7 @@ export const volumeManagerSlice = createSlice({
                 state.mute = false;
             }
         },
-        setMute: (state) => {
+        setMute: (state) => { // Set mute
             if (!state.trueVolume) {
                 state.trueVolume = 0.05;
                 state.mute = false;

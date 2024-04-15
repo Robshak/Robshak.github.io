@@ -11,9 +11,11 @@ import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager
 import { currentFocusActions } from "../../Store/CurrentTrackStateSlices/currentMouseFocus.slice";
 import Popup from "reactjs-popup";
 
+// Colors for painting the progress bar
 const PRIMARY_COLOR = "F178B6";
 const WHITE_COLOR = "fff";
 
+// Object - everything about the current playback
 function Player() {
     const dispatch = useDispatch<AppDispatch>();
     const [progressBarColor, setProgressBarColor] = useState<string>(WHITE_COLOR);
@@ -26,21 +28,24 @@ function Player() {
     const volumeManager = useSelector((s: RootState) => s.volumeManager);
     const activeManager = useSelector((s: RootState) => s.activeManager);
 
+    // start the audio player
     const audioPlayer = useRef<HTMLAudioElement>(null);
 
-
+    // if some track is playing - set it up
     useEffect(() => {
         if (currentTrack && audioPlayer.current) {
             audioPlayer.current.src = currentTrack.previewUrl;
         }
     }, [currentTrack, audioPlayer]);
 
+    // apply the necessary volume
     useEffect(() => {
         if (audioPlayer.current) {
             audioPlayer.current.volume = volumeManager.volume;
         }
     }, [volumeManager.volume, audioPlayer]);
 
+    // apply the necessary state - play / pause
     useEffect(() => {
         if (audioPlayer.current && activeManager.active) {
             audioPlayer.current.play();
@@ -50,11 +55,12 @@ function Player() {
         }
     });
 
+    // change the current state
     const playTrack = () => {
         dispatch(activeManagerActions.toggleActive());
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // support for progress bar depending on user actions
     const changeProgressBar = (e: any) => {
         if (audioPlayer.current) {
             if (needUpdateProgressBar) {
@@ -64,26 +70,31 @@ function Player() {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // support for progress bar depending on the listened part
     const updateProgressBar = (e: any) => {
         if (needUpdateProgressBar) {
             setCurrentPosition(e.target.currentTime * 100);
         }
     };
 
+    // color the progress bar on hover
     const progressBarHover = () => {
         setProgressBarColor(PRIMARY_COLOR);
     };
 
+    // revert the progress bar color on unhover
     const progressBarUnhover = () => {
         setProgressBarColor(WHITE_COLOR);
     };
 
+    // when the user grabs the progress bar
+    // we must freeze its change for the listened part of the track
     const stopUdateProgressBar = () => {
         setNeedUpdateProgressBar(false);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // apply a new value when releasing the progress bar
+    // and resume change for the listened part of the track
     const startUdateProgressBar = (e: any) => {
         if (audioPlayer.current) {
             audioPlayer.current.currentTime = e.target.value / 100;
@@ -91,6 +102,7 @@ function Player() {
         setNeedUpdateProgressBar(true);
     };
 
+    // change the repeat playback parameter
     const onCycle = () => {
         if (audioPlayer.current) {
             audioPlayer.current.loop = !audioPlayer.current.loop;
@@ -98,11 +110,12 @@ function Player() {
         }
     };
 
+    // change the volume state when clicking the button
     const toggleMute = () => {
         dispatch(volumeManagerActions.setMute());
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // change the volume state when dragging the volume bar
     const changeVolume = (e: any) => {
         if (audioPlayer.current) {
             audioPlayer.current.volume = e.target.value / 100;
@@ -110,14 +123,17 @@ function Player() {
         }
     };
 
+    // color the volume bar on hover
     const volumeBarHover = () => {
         setVolumeBarColor(PRIMARY_COLOR);
     };
 
+    // revert the volume bar color on unhover
     const volumeBarUnhover = () => {
         setVolumeBarColor(WHITE_COLOR);
     };
 
+    // get a new track when clicking the next or prev button
     const getPrevNextTrack = (isNext: boolean) => {
         const plus = (isNext ? 1 : -1);
 
@@ -147,6 +163,7 @@ function Player() {
         return currentList[currentId];
     };
 
+    // turn on the next track
     const goNext = () => {
         const newTrack = getPrevNextTrack(true);
         if (!newTrack) {
@@ -156,6 +173,7 @@ function Player() {
         dispatch(PlayerActions.setTrack(newTrack));
     };
 
+    // turn on the prev tracks
     const goPrev = () => {
         if (currentPosition > 200) {
             if (audioPlayer.current) {
@@ -173,7 +191,7 @@ function Player() {
         }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // try to get the track
     const getTrackObject = (e: any) => {
         let res = e.target;
         while (!res.id && res.parentElement && !(res.value == "unClicked")) {
@@ -182,11 +200,12 @@ function Player() {
         return res?.id as string;
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // handle click on the window, if it's a track, then it needs focus
     document.querySelector("html")?.addEventListener("click", (e: any) => {
         dispatch(currentFocusActions.setFocus(getTrackObject(e)));
     });
 
+    // calculate values for progress bar and volume bar
     const progressBarToProcent = currentPosition / (currentTrack?.durationMs ? currentTrack.durationMs / 1000 : currentPosition);
     const volumeBarToProcent = volumeManager.volume * 100;
 
@@ -246,9 +265,6 @@ function Player() {
                         min={0} max={100} value={volumeManager.volume * 100} onChange={changeVolume}
                         style={{ background: `linear-gradient(to right, #${volumeBarColor} ${volumeBarToProcent}%, #301322 ${volumeBarToProcent}%)` }} />
                 </div>
-                <button className={styles["open-track"]}>
-                    <img src="/openTrackInfoIcon.svg" alt="open track info" />
-                </button>
             </div>
         </footer>
         <Popup defaultOpen open={false} children={undefined}></Popup>

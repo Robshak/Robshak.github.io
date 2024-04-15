@@ -10,16 +10,19 @@ import { HistoryDynamicTagsStateActions } from "../../../Store/TagsSlices/dynami
 import { Tag } from "../../../interfaces/tag.interface";
 import { PlayerActions } from "../../../Store/CurrentTrackStateSlices/playerManager.slice";
 
+// Object for creating a set of tags used for selecting tracks
 function CreateTaglistPanel() {
     const dispatch = useDispatch<AppDispatch>();
     const { dynamicTags } = useSelector((s: RootState) => s.currentDynamicTags);
     const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
 
+    // Clear the current set of tags
     const clearInput = () => {
-        dispatch(HistoryDynamicTagsStateActions.addDynamicTags(dynamicTags));
-        dispatch(CurrentDynamicTagsStateActions.clear());
+        dispatch(HistoryDynamicTagsStateActions.addDynamicTags(dynamicTags)); // Saved to history
+        dispatch(CurrentDynamicTagsStateActions.clear()); // Cleared
     };
 
+    // Check tag lists for inclusion of the second in the first
     const contains = (first: Tag[], second: Tag[]) => {
         const firstNames = first.map(tg => tg.name);
         const secondNames = second.map(tg => tg.name);
@@ -29,13 +32,13 @@ function CreateTaglistPanel() {
         return true;
     };
 
+    // Create a playlist based on the selected tags
     const createPlaylist = () => {
         if (!dynamicTags.length) {
             return;
         }
         const newList = tracks.filter(tr => {
             for (const dtg of dynamicTags) {
-                // console.log(dtg.tags, tr.tags);
                 if (contains(tr.tags, dtg.tags)) {
                     return true;
                 }
@@ -51,7 +54,7 @@ function CreateTaglistPanel() {
         <div className={styles["panel"]}>
             <h2 className={styles["header"]}>Create your playlist</h2>
             <div className={cn(styles["input-tag-panel"], styles["tag-panel"])}>
-                <div className={styles["block-text"]}>Chose tags: </div>
+                <div className={styles["block-text"]}>Choose tags: </div>
                 <InputTags className={styles["tags-box"]}></InputTags>
             </div>
             <div className={cn(styles["history-tag-panel"], styles["tag-panel"])}>

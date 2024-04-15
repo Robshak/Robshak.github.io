@@ -8,33 +8,37 @@ import { useEffect, useState } from "react";
 import { CurrentDynamicTagsStateActions } from "../../../Store/TagsSlices/currentDynamicTags";
 import { openTagsNowStateActions } from "../../../Store/TagsSlices/openTagNow.slice";
 
+// Popup for controlling a multitag - a tag that can include multiple tags within itself
 function DynamicTagPopup({ dynamicTagId, favoriteTags, onClose }: DynamicTagPopupProps) {
     const dispatch = useDispatch<AppDispatch>();
     const [openState, setOpenState] = useState(true);
     const { tags } = useSelector((s: RootState) => s.tagList);
     const openTags = useSelector((s: RootState) => s.openTagsNow);
 
+    // Setting selected tags
     useEffect(() => {
         dispatch(openTagsNowStateActions.setTags(favoriteTags));
     }, [dispatch, favoriteTags]);
 
+    // Close popup
     const localOnClose = () => {
         dispatch(openTagsNowStateActions.clearState());
         setOpenState(false);
         onClose();
     };
 
+    // Applying changes
     const submit = () => {
-        if (!dynamicTagId) {
+        if (!dynamicTagId) { // If tag is not exist - create it
             dispatch(CurrentDynamicTagsStateActions.addDynamicTag(openTags.tags));
         }
-        else {
-            console.log(openTags);
+        else { // Else change it
             dispatch(CurrentDynamicTagsStateActions.setDynamicTag({
                 id: dynamicTagId,
                 tags: openTags.tags
             }));
         }
+        // And close popup
         dispatch(openTagsNowStateActions.clearState());
         setOpenState(false);
     };

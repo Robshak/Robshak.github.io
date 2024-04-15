@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-// import { loadState } from "./storage";
 
 export const ACTIVE_MANAGER_PERSISTENT_STATE = "active-manager";
 
@@ -15,14 +14,15 @@ const initialState: ActiveManagerState = {
     active: false
 };
 
+// Slice for controlling the state of the current track
 export const ActiveManagerSlice = createSlice({
     name: "activeManager",
     initialState,
     reducers: {
-        setActive: (state, action: PayloadAction<boolean>) => {
+        setActive: (state, action: PayloadAction<boolean>) => { // set a specific value
             state.active = action.payload;
         },
-        toggleActive: (state) => {
+        toggleActive: (state) => { // toggle the value to its opposite
             state.active = !state.active;
         }
     }

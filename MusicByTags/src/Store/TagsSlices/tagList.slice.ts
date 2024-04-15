@@ -24,11 +24,12 @@ const initialState: TaglistState = {
     tags: loadState<TaglistPersistentState>(TAGLIST_PERSISTENT_STATE)?.tags ?? defaultTags
 };
 
+// Slice for storing the current list of tags
 export const taglistSlice = createSlice({
     name: "taglist",
     initialState,
     reducers: {
-        addTag: (state, action: PayloadAction<Tag>) => {
+        addTag: (state, action: PayloadAction<Tag>) => { // Add tag
             if (!action.payload.name || !action.payload.color) {
                 return;
             }
@@ -38,10 +39,10 @@ export const taglistSlice = createSlice({
                 state.tags = newState;
             }
         },
-        delTag: (state, action: PayloadAction<string>) => {
+        deleteTag: (state, action: PayloadAction<string>) => { // Delete tag
             state.tags = state.tags.filter(t => t.name != action.payload);
         },
-        reworkTag: (state, action: PayloadAction<{ tagName: string, newValue: Tag }>) => {
+        editTag: (state, action: PayloadAction<{ tagName: string, newValue: Tag }>) => { // Edit tag
             state.tags = state.tags.map(tg => {
                 if (action.payload.tagName == tg.name) {
                     tg = action.payload.newValue;

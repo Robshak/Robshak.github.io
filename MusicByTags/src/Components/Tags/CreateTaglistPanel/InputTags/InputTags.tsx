@@ -6,10 +6,12 @@ import DynamicTagPopup from "../../../Popup/DynamicTagPopup/DynamicTagPopup";
 import { RootState } from "../../../../Store/store";
 import { useSelector } from "react-redux";
 
+// Object - list of tag sets used for track selection
 function InputTags({ className }: { className?: string }) {
     const [openState, setOpenState] = useState<boolean>(false);
     const { dynamicTags } = useSelector((s: RootState) => s.currentDynamicTags);
 
+    // Open popup for configuring and adding a new set of tags
     const addTag = () => {
         setOpenState(true);
     };

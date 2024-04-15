@@ -1,14 +1,17 @@
 import { FC, PropsWithChildren, useCallback, useEffect, useState } from "react";
-import { ContextMenu, ContextMenuItem, ContextMenuPosition } from "./Contextmenu.context";
+import { ContextMenu, ContextMenuItem } from "./Contextmenu.context";
 import styles from "./Contextmenu.module.css";
 import cn from "classnames";
+import { ObjectPosition } from "../../../interfaces/ObjectPosition";
 
+// Object for creating contextual menus with any buttons
 export const ContextMenuProvider: FC<PropsWithChildren<object>> = ({ children }) => {
     const [contextMenuItems, setContextMenuItems] = useState<ContextMenuItem[]>([]);
-    const [position, setPosition] = useState<ContextMenuPosition>();
+    const [position, setPosition] = useState<ObjectPosition>();
     const [blockState, setBlockState] = useState<boolean>(false);
 
-    const setContextMenu = useCallback((items: ContextMenuItem[], position: ContextMenuPosition, block?: boolean) => {
+    // Create contextual menus
+    const setContextMenu = useCallback((items: ContextMenuItem[], position: ObjectPosition, block?: boolean) => {
         setContextMenuItems(items);
         setPosition(position);
         if (block != undefined) {
@@ -19,15 +22,17 @@ export const ContextMenuProvider: FC<PropsWithChildren<object>> = ({ children })
         }
     }, []);
 
+    // Removing the position upon menu closure
     const closeMenu = useCallback(() => {
         setPosition(undefined);
     }, []);
 
+    // Handling the disappearance of the contextual menu upon clicking
     useEffect(() => {
-        document.getElementById("popup-root")?.addEventListener("click", closeMenu);
-        document.body?.addEventListener("click", closeMenu);
+        document.getElementById("popup-root")?.addEventListener("click", closeMenu); // Upon clicking on the popup
+        document.body?.addEventListener("click", closeMenu); // Upon clicking on the another object
 
-        return () => {
+        return () => { // Unlinking dependencies
             document.getElementById("popup-root")?.removeEventListener("click", closeMenu);
             document.body?.removeEventListener("click", closeMenu);
         };

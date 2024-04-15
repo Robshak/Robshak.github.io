@@ -12,6 +12,7 @@ import { AxiosError } from "axios";
 import { searchAPI } from "../../workWithAPI/searchAPI";
 import { PlayerActions } from "../../Store/CurrentTrackStateSlices/playerManager.slice";
 
+// object - current search list
 function TotalSearch() {
     const dispatch = useDispatch<AppDispatch>();
     const naviaget = useNavigate();
@@ -19,10 +20,12 @@ function TotalSearch() {
 
     getTOKEN();
 
+    // go to page "create playlist"
     const changePage = () => {
         naviaget("/playlist");
     };
 
+    // get tracks from API
     const createSearch = async (params: { searchString: string }) => {
         try {
             const data: (Track | undefined)[] | undefined = await searchAPI(params.searchString);
@@ -37,6 +40,7 @@ function TotalSearch() {
         }
     };
 
+    // Performing a search when the query changes
     const onSearch = async (e: FormEvent<HTMLInputElement>) => {
         let data = await createSearch({ searchString: e.currentTarget.value });
         if (!data) {
@@ -46,6 +50,7 @@ function TotalSearch() {
         dispatch(PlayerActions.setSearchList(data as Track[]));
     };
 
+    // update function for drag-and-drop
     const changeList = (newValue: Track[]) => {
         if (currentList == searchtList) {
             dispatch(PlayerActions.setCurrentList(newValue));

@@ -8,11 +8,12 @@ const initialState: ActiveManagerState = {
     currentFocus: ""
 };
 
+// Slice for tracking which track currently has focus
 export const CurrentFocusSlice = createSlice({
     name: "currentFocus",
     initialState,
     reducers: {
-        setFocus: (state, action: PayloadAction<string>) => {
+        setFocus: (state, action: PayloadAction<string>) => { // set focus
             state.currentFocus = action.payload;
         }
     }

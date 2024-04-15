@@ -1,6 +1,7 @@
 import { ISearchInputProps } from "./SearchInput.props";
 import styles from "./SearchInput.module.css";
 
+// Object - search input for menu
 function SearchInput({ img, ...props }: ISearchInputProps) {
     return <div className={styles["input-box"]}>
         <label className={styles["label"]} htmlFor={props.id}>

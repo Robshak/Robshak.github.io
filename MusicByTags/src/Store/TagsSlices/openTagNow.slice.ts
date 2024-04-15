@@ -10,20 +10,21 @@ const initialState: OpenTagsNowState = {
     tags: []
 };
 
+// Slice for controlling which tags are currently active in the current tag set
 export const openTagsNowStateSlice = createSlice({
     name: "taglistOnTrack",
     initialState,
     reducers: {
-        clearState: (state) => {
+        clearState: (state) => { // Clear state
             state.tags = [];
         },
-        setTags: (state, action: PayloadAction<Tag[]>) => {
+        setTags: (state, action: PayloadAction<Tag[]>) => { // Set tags
             state.tags = action.payload ?? [];
         },
-        addTag: (state, action: PayloadAction<Tag>) => {
+        addTag: (state, action: PayloadAction<Tag>) => { // Add tag
             state.tags.push(action.payload);
         },
-        delTag: (state, action: PayloadAction<Tag>) => {
+        deleteTag: (state, action: PayloadAction<Tag>) => { // delete tag
             state.tags = state.tags.filter(tg => tg.name != action.payload.name);
         }
     }

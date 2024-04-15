@@ -2,6 +2,7 @@ import { IMenuButtonProps } from "./MenuButton.props";
 import styles from "./MenuButton.module.css";
 import cn from "classnames";
 
+// Object - button for menu
 function MenuButton({ img, children, active, className, ...props }: IMenuButtonProps) {
     return <button className={cn(
         styles["button"],

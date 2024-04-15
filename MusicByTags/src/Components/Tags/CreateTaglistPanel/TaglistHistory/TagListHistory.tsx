@@ -3,11 +3,17 @@ import DynamicTaglist from "../DynamicTaglist/DynamicTaglist";
 import cn from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../Store/store";
-import { CurrentDynamicTagsStateActions } from "../../../../Store/TagsSlices/currentDynamicTags";
+import { CurrentDynamicTagsStateActions, DynamicTag } from "../../../../Store/TagsSlices/currentDynamicTags";
 
+// Object - history of sets of tag lists
 function TaglistHistory({ className }: { className?: string }) {
     const dispatch = useDispatch<AppDispatch>();
     const { historyDynamicTags } = useSelector((s: RootState) => s.historyDynamicTags);
+
+    // Set a new value for the current list of sets
+    const setInput = (dynamicTags: DynamicTag[]) => {
+        dispatch(CurrentDynamicTagsStateActions.setDynamicTags(dynamicTags));
+    };
 
     return (
         <div className={cn(styles["histopry-tags"], className)}>
@@ -15,7 +21,7 @@ function TaglistHistory({ className }: { className?: string }) {
                 return <DynamicTaglist key={index}
                     historyId={index}
                     onClick={() => {
-                        dispatch(CurrentDynamicTagsStateActions.setDynamicTags(dynamicTags));
+                        setInput(dynamicTags);
                     }}
                     dynamicTags={dynamicTags}
                     className={styles["history-list"]}></DynamicTaglist>;

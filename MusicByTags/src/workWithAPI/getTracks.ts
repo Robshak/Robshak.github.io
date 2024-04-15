@@ -3,13 +3,11 @@ import { TOKEN } from "./getTOKEN";
 import { Track } from "../interfaces/Track.interface";
 import { TrackFromSpotify } from "../interfaces/TrackFromSpotify.interface";
 
+// Function to convert duration to text
 export function durationToText(duration_ms: number) {
     duration_ms /= 1000;
     const minutes = String(Math.floor(duration_ms / 60));
     let seconds = String(Math.floor(duration_ms % 60));
-    // if (minutes.length == 1) {
-    //     minutes = "0" + minutes;
-    // }
     if (seconds.length == 1) {
         seconds = "0" + seconds;
     }
@@ -17,8 +15,9 @@ export function durationToText(duration_ms: number) {
     return durationText;
 }
 
+// Fetches a single track and transforms it into a convenient format
 export async function getTrack(searchString: string): Promise<Track | undefined> {
-    const token = localStorage.getItem(TOKEN);
+    const token = localStorage.getItem(TOKEN); // Token required for the request
 
     const options = {
         method: "GET",
@@ -54,6 +53,7 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
     }
 }
 
+// Makes a batch request for all the required tracks at once
 export async function getTracksById(trackIds: string[]) {
     let res = await Promise.all(trackIds.map(i => getTrack(i)));
     res.filter(track => typeof track == "undefined");

@@ -10,6 +10,7 @@ import openTagsNowStateSlice from "./TagsSlices/openTagNow.slice";
 import currentDynamicTagsSlice, { CURRENT_DYNAMICTAGS_PERSISTENT_STATE } from "./TagsSlices/currentDynamicTags";
 import historyDynamicTagsSlice, { HISTORY_DYNAMICTAGS_PERSISTENT_STATE } from "./TagsSlices/dynamicTagsHistory";
 
+// Main sotre
 export const store = configureStore({
     reducer: {
         volumeManager: volumeManagerSlice,

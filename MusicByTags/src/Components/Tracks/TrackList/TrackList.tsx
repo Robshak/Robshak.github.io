@@ -4,36 +4,52 @@ import { RootState } from "../../../Store/store";
 import { Reorder, motion } from "framer-motion";
 import { TrackListProps } from "./TrackList.props";
 import TrackItem from "../Track/Track";
+import { useRef } from "react";
 
+// Object - playlist
 function TrackList({ head, list, changerList }: TrackListProps) {
     const focusTrack = useSelector((s: RootState) => s.currentFocus);
+    const listDisplay: any = useRef(null);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Clear list
+    listDisplay.innerHTML = "";
+
+    // Handling scroll during drag-and-drop dragging
     const handlePan = (e: any) => {
         const mousePos = e.clientY;
         const windowHeight = window.screen.height;
-        if (mousePos < 100) {
+        if (mousePos < 200) {
             scrollTo(0, window.pageYOffset - 15);
         } else if (windowHeight - mousePos < 300) {
             scrollTo(0, window.pageYOffset + 15);
         }
     };
 
-    return <motion.div
-        onPan={handlePan}
-        className={styles["track-list-wrapper"]}>
+    return <div className={styles["track-list-wrapper"]}>
         {head}
-        <Reorder.Group axis="y" onReorder={changerList} values={list}
-            className={styles["track-list"]}>
-            {list?.map((track, index) => {
-                if (track) {
-                    return <TrackItem key={track.id} track={track} index={index}
-                        list={list}
-                        focusActive={focusTrack.currentFocus == track.id}></TrackItem>;
-                }
-            })}
-        </Reorder.Group>
-    </motion.div>;
+        <header className={styles["header"]}>
+            <div>№</div>
+            <div></div>
+            <div>Name</div>
+            <div>Album</div>
+            <div>Duration</div>
+        </header>
+        <motion.div
+            onPan={handlePan}
+        >
+
+            <Reorder.Group axis="y" onReorder={changerList} values={list} ref={listDisplay}
+                className={styles["track-list"]}>
+                {list?.map((track, index) => {
+                    if (track) {
+                        return <TrackItem key={track.id} track={track} index={index}
+                            list={list}
+                            focusActive={focusTrack.currentFocus == track.id}></TrackItem>;
+                    }
+                })}
+            </Reorder.Group>
+        </motion.div>
+    </div>;
 }
 
 export default TrackList;

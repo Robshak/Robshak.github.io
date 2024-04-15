@@ -17,15 +17,16 @@ const initialState: TaglistOnTrackState = {
     tracks: loadState<TaglistOnTrackStatePersistentState>(TAGLISTONTRACK_MANAGER_PERSISTENT_STATE)?.tracks ?? []
 };
 
+// Slice for storing tracks with tags and storing tags on these tracks
 export const taglistOnTrackStateSlice = createSlice({
     name: "taglistOnTrack",
     initialState,
     reducers: {
-        setOnTrack: (state, action: PayloadAction<{ track: Track, tags: Tag[] }>) => {
+        setOnTrack: (state, action: PayloadAction<{ track: Track, tags: Tag[] }>) => { // assign a set of tags to the track
             state.tracks = state.tracks.filter(tr => tr.id != action.payload.track.id);
             state.tracks.push({ ...action.payload.track, tags: action.payload.tags });
         },
-        addTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
+        addTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => { // add a tag to the track
             const needTrack = state.tracks.find(tr => tr.id == action.payload.track.id);
             if (!needTrack) {
                 const newTrack = { ...action.payload.track, tags: [] } as Track;
@@ -40,7 +41,7 @@ export const taglistOnTrackStateSlice = createSlice({
                 state.tracks.push(needTrack);
             }
         },
-        deleteTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => {
+        deleteTagOnTrack: (state, action: PayloadAction<{ track: Track, tag: Tag }>) => { // delete a tag from the track
             const needTrack = state.tracks.find(tr => tr.id == action.payload.track.id);
             if (!needTrack) {
                 return;
@@ -52,14 +53,14 @@ export const taglistOnTrackStateSlice = createSlice({
                 state.tracks.push(needTrack);
             }
         },
-        deleteTagOnAllTracks: (state, action: PayloadAction<Tag>) => {
+        deleteTagOnAllTracks: (state, action: PayloadAction<Tag>) => { // delete a tag from all tracks
             state.tracks = state.tracks.map(tr => {
                 tr.tags = tr.tags.filter(tg => tg.name != action.payload.name);
                 return tr;
             });
             state.tracks = state.tracks.filter(tr => tr.tags.length);
         },
-        reworkTagOnAllTracks: (state, action: PayloadAction<{ tagName: string, newValue: Tag }>) => {
+        editTagOnAllTracks: (state, action: PayloadAction<{ tagName: string, newValue: Tag }>) => { // edit a tag on all tracks
             state.tracks = state.tracks.map(tr => {
                 tr.tags = tr.tags.map(tg => {
                     if (tg.name == action.payload.tagName) {

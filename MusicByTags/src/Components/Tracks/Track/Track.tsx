@@ -10,17 +10,22 @@ import AddTag from "../../Tags/AddTag/AddTag";
 import TagBlock from "../../Tags/TagBlock/TagBlock";
 import { MouseEvent } from "react";
 
+// Object - track in the track list
 function TrackItem({ track, list, className, index, focusActive }: TrackItemProps) {
     const dispatch = useDispatch<AppDispatch>();
     const currentTrack = useSelector((s: RootState) => s.player.currentTrack);
     const activeManager = useSelector((s: RootState) => s.activeManager);
     const { tracks } = useSelector((s: RootState) => s.taglistOnTrack);
 
+    // Save the old track for correct drag-and-drop functionality
+    // and add tags from the new track instance
     const baseTrack = track;
-    if (!track.tags) {
-        track = tracks.find(tr => tr.id == track.id) ?? { ...track, tags: [] };
+    const trackWithTags = tracks.find(tr => tr.id == track.id);
+    if (trackWithTags) {
+        track = trackWithTags;
     }
 
+    // Play / pause track
     const playTrack = () => {
         if (currentTrack?.previewUrl != track.previewUrl) {
             dispatch(PlayerActions.setTrack(track));
@@ -32,17 +37,20 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
         }
     };
 
+    // Handle track click
     const clickToTrack = () => {
         if (focusActive) {
             playTrack();
         }
     };
 
+    // Handle button click, no need to check for focus
     const clickToButton = (e: MouseEvent) => {
         playTrack();
         e.stopPropagation();
     };
 
+    // Enable animation if the track is playing and selected
     const setAnimation = currentTrack?.previewUrl == track.previewUrl && activeManager.active;
 
     return <Reorder.Item
@@ -88,7 +96,7 @@ function TrackItem({ track, list, className, index, focusActive }: TrackItemProp
                     ></TagBlock>;
                 })}
             </div>
-            {track ? <AddTag track={track} type="small"></AddTag> : <></>}
+            {track ? <AddTag track={track}></AddTag> : <></>}
         </div>
     </Reorder.Item>;
 }

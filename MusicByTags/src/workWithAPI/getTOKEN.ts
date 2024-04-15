@@ -3,6 +3,7 @@ import axios from "axios";
 export const client_id = "342af3e686ee41a9ae548be73e9b4f74";
 export const client_secret = "b47aec4e0e704aa98d2cf8044a075b15";
 
+// Interface describing the API response type
 export interface GetToken {
     access_token: string
     token_type: string

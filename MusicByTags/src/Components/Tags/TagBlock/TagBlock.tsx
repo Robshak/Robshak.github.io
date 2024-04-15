@@ -2,7 +2,7 @@ import styles from "./TagBlock.module.css";
 import cn from "classnames";
 import { TagBlockProps } from "./TagBlock.props";
 import TagSettingPopup from "../../Popup/TagSettingPopup/TagSettingPopup";
-import { ContextMenuItem, ContextMenuPosition } from "../../Context/Contextmenu/Contextmenu.context";
+import { ContextMenuItem } from "../../Context/Contextmenu/Contextmenu.context";
 import { MouseEvent, useCallback, useMemo, useState } from "react";
 import { useContextMenu } from "../../Hooks/useContextMenu";
 import { AppDispatch } from "../../../Store/store";
@@ -10,27 +10,30 @@ import { useDispatch } from "react-redux";
 import { taglistOnTrackStateActions } from "../../../Store/TagsSlices/tagListOnTrack..slice";
 import { taglistActions } from "../../../Store/TagsSlices/tagList.slice";
 import { openTagsNowStateActions } from "../../../Store/TagsSlices/openTagNow.slice";
+import { ObjectPosition } from "../../../interfaces/ObjectPosition";
 
+// Object - tag
 function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
     const dispatch = useDispatch<AppDispatch>();
     const { setContextMenu } = useContextMenu();
     const [openReworkPopup, setOpenReworkPopup] = useState<boolean>(false);
 
+    // Create context menu
     const contextMenu = useMemo(() => [
-        {
-            name: "Rework tag",
+        { // Edit tag
+            name: "Edit tag",
             onClick: () => { setOpenReworkPopup(true); }
         },
-        {
+        { // Delete tag
             name: "Delete tag",
             onClick: () => {
                 dispatch(taglistOnTrackStateActions.deleteTagOnAllTracks(tag));
-                dispatch(taglistActions.delTag(tag.name));
-                dispatch(openTagsNowStateActions.delTag(tag));
+                dispatch(taglistActions.deleteTag(tag.name));
+                dispatch(openTagsNowStateActions.deleteTag(tag));
             }
         },
-        {
-            name: "Put away",
+        { // Remove tag from current tag set
+            name: "Remove",
             onClick: () => {
                 if (!track) {
                     return;
@@ -40,11 +43,12 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
                     track,
                     tag
                 }));
-                dispatch(openTagsNowStateActions.delTag(tag));
+                dispatch(openTagsNowStateActions.deleteTag(tag));
             }
         }
     ] as ContextMenuItem[], [dispatch, tag, track]);
 
+    // Invoke context menu
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();
         const { clientX, clientY } = e;
@@ -53,9 +57,10 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
             return;
         }
 
-        setContextMenu(contextMenu, { x: clientX, y: clientY } as ContextMenuPosition, tag.private);
+        setContextMenu(contextMenu, { x: clientX, y: clientY } as ObjectPosition, tag.private);
     }, [setContextMenu, contextMenu, tag.private]);
 
+    // Open tag setting on click
     const onClick = (e: MouseEvent) => {
         setOpenReworkPopup(true);
         e.stopPropagation();
@@ -80,6 +85,7 @@ function TagBlock({ tag, track, className, mini, ...props }: TagBlockProps) {
         }
         {openReworkPopup && <TagSettingPopup
             reworkTag={tag}
+            track={track}
             onClose={() => setOpenReworkPopup(false)}
         ></TagSettingPopup>}
     </>;

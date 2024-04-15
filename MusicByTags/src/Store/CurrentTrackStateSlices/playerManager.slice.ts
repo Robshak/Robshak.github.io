@@ -25,20 +25,21 @@ const initialState: PlayerState = {
     createList: loadState<PlayerPersistentState>(PLAYER_PERSISTENT_STATE)?.createList ?? []
 };
 
+// Slice for supporting playlist and current track states
 export const PlayerSlice = createSlice({
     name: "player",
     initialState,
     reducers: {
-        setTrack: (state, action: PayloadAction<Track>) => {
+        setTrack: (state, action: PayloadAction<Track>) => { // set track
             state.currentTrack = action.payload;
         },
-        setCurrentList: (state, action: PayloadAction<Track[]>) => {
+        setCurrentList: (state, action: PayloadAction<Track[]>) => { // set the playlist to orient the track
             state.currentList = action.payload;
         },
-        setSearchList: (state, action: PayloadAction<Track[]>) => {
+        setSearchList: (state, action: PayloadAction<Track[]>) => { // Set search list
             state.searchtList = action.payload;
         },
-        setCreateList: (state, action: PayloadAction<Track[]>) => {
+        setCreateList: (state, action: PayloadAction<Track[]>) => { // Set create list
             state.createList = action.payload;
         }
     }

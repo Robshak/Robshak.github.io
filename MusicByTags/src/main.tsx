@@ -9,6 +9,7 @@ import { store } from "./Store/store";
 import Player from "./Layout/Player/Player";
 import { ContextMenuProvider } from "./Components/Context/Contextmenu/Contextmenu.provider";
 
+// Create router
 const router = createBrowserRouter([
   {
     path: "",

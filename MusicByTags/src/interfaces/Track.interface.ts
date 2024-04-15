@@ -1,7 +1,6 @@
-// import { DynamicTag } from "../Store/TagsSlices/currentDynamicTags";
 import { Tag } from "./tag.interface";
 
-export interface Track {
+export interface Track { // Interface for track
     id: string
     number: number
     name: string

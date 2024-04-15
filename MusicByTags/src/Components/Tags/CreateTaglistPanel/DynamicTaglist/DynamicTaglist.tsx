@@ -6,16 +6,19 @@ import { useContextMenu } from "../../../Hooks/useContextMenu";
 import { MouseEvent, useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../../Store/store";
-import { ContextMenuItem, ContextMenuPosition } from "../../../Context/Contextmenu/Contextmenu.context";
+import { ContextMenuItem } from "../../../Context/Contextmenu/Contextmenu.context";
 import { HistoryDynamicTagsStateActions } from "../../../../Store/TagsSlices/dynamicTagsHistory";
+import { ObjectPosition } from "../../../../interfaces/ObjectPosition";
 
+// Object - list of tag sets
 function DynamicTaglist({ className, dynamicTags, historyId, ...props }: DynamicTaglistProps) {
     const dispatch = useDispatch<AppDispatch>();
     const { setContextMenu } = useContextMenu();
 
+    // Context menu
     const contextMenu = useMemo(() => [
-        {
-            name: "Clear  history",
+        { // Clear history
+            name: "Clear history",
             onClick: () => {
                 if (typeof historyId == "undefined") {
                     return;
@@ -25,6 +28,7 @@ function DynamicTaglist({ className, dynamicTags, historyId, ...props }: Dynamic
         }
     ] as ContextMenuItem[], [dispatch, historyId]);
 
+    // Invoke context menu
     const handleContextMenu = useCallback((e: MouseEvent) => {
         e.preventDefault();
         const { clientX, clientY } = e;
@@ -33,7 +37,7 @@ function DynamicTaglist({ className, dynamicTags, historyId, ...props }: Dynamic
             return;
         }
 
-        setContextMenu(contextMenu, { x: clientX, y: clientY } as ContextMenuPosition);
+        setContextMenu(contextMenu, { x: clientX, y: clientY } as ObjectPosition);
     }, [setContextMenu, contextMenu]);
 
     return (
