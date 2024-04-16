@@ -56,7 +56,7 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
 // Makes a batch request for all the required tracks at once
 export async function getTracksById(trackIds: string[]) {
     let res = await Promise.all(trackIds.map(i => getTrack(i)));
-    res.filter(track => typeof track == "undefined");
+    res.filter(track => typeof track != "undefined");
     let cnt = -1;
     res = res.map(track => {
         cnt++;
