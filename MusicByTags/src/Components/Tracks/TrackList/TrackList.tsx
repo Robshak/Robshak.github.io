@@ -37,12 +37,11 @@ function TrackList({ head, list, changerList }: TrackListProps) {
         <motion.div
             onPan={handlePan}
         >
-
             <Reorder.Group axis="y" onReorder={changerList} values={list} ref={listDisplay}
                 className={styles["track-list"]}>
                 {list?.map((track, index) => {
                     if (track) {
-                        return <TrackItem key={track.id} track={track} index={index}
+                        return <TrackItem key={index} track={track} index={index}
                             list={list}
                             focusActive={focusTrack.currentFocus == track.id}></TrackItem>;
                     }
