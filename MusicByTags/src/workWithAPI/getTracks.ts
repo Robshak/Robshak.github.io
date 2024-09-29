@@ -29,7 +29,6 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
 
     try {
         const response = await axios.request<TrackFromSpotify>(options);
-        // console.log(response.data);
         const data = response.data;
         if (data.preview_url) {
             const completeTrack: Track = {
@@ -37,8 +36,6 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
                 number: 0,
                 name: data.name,
                 img: data.album.images[0].url,
-                // durationMs: data.duration_ms,
-                // durationText: durationToText(data.duration_ms),
                 durationMs: 30000,
                 durationText: durationToText(30000),
                 artists: data.artists.map(artist => artist.name).join(", "),
@@ -46,7 +43,6 @@ export async function getTrack(searchString: string): Promise<Track | undefined>
                 album: data.album.name,
                 tags: []
             };
-            // console.log(completeTrack);
             return completeTrack;
         }
     } catch (error) {

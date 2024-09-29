@@ -14,12 +14,10 @@ const getAuthUrl = (currentUrl: string) => {
 
 const SpotifyAuthComponent = () => {
   const [currentUrl] = useState<string>("https://silver-bonbon-26555e.netlify.app/");
-//   const [currentUrl] = useState<string>("http://localhost:5173/");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const naviaget = useNavigate();
 
   useEffect(() => {
-    // setCurrentUrl(window.location.href);
     const tokenFromStorage = localStorage.getItem(TOKEN);
     const codeFromUrl = new URLSearchParams(window.location.search).get("code");
 
