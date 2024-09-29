@@ -7,26 +7,26 @@ const clientId = "342af3e686ee41a9ae548be73e9b4f74";
 const secret = "b47aec4e0e704aa98d2cf8044a075b15";
 const scopes = "user-read-private user-read-email";
 
-const getAuthUrl = () => {
-    const currentUrl = window.location.href;
+const getAuthUrl = (currentUrl: string) => {
     const spotifyAuthUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(currentUrl)}`;
     return spotifyAuthUrl;
 };
 
 const SpotifyAuthComponent = () => {
+  const [currentUrl] = useState<string>("https://silver-bonbon-26555e.netlify.app/");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const naviaget = useNavigate();
 
   useEffect(() => {
+    // setCurrentUrl(window.location.href);
     const tokenFromStorage = localStorage.getItem(TOKEN);
     const codeFromUrl = new URLSearchParams(window.location.search).get("code");
 
     if (!tokenFromStorage && codeFromUrl) {
-      console.log("HERE");
       getTokenFromCode(codeFromUrl);
     } 
-    else if (!tokenFromStorage) {
-      window.location.href = getAuthUrl();
+    if (!tokenFromStorage) {
+      window.location.href = getAuthUrl(currentUrl);
     } else {
       setAccessToken(tokenFromStorage);
     }
@@ -34,7 +34,6 @@ const SpotifyAuthComponent = () => {
 
   const getTokenFromCode = async (code: string) => {
     try {
-      const currentUrl = window.location.href;
       const response = await axios.post("https://accounts.spotify.com/api/token", null, {
         params: {
           grant_type: "authorization_code",
