@@ -27,14 +27,8 @@ async function getPage(url: string): Promise<SearchFromSpotify | undefined> {
     try {
         const response: any = await axios.request<SearchFromSpotify>(options)
             .then(d => d)
-            .catch(async e => { // Handling error for too many requests
-                if (e.response.status == 429) {
-                    return await new Promise((resolve) => {
-                        setTimeout(() => {
-                            resolve(getPage(url));
-                        }, 100);
-                    });
-                }
+            .catch(async e => { 
+                console.error(e);
             });
         if (response) {
             const data = response.data;
@@ -48,7 +42,7 @@ async function getPage(url: string): Promise<SearchFromSpotify | undefined> {
 // Returns a list of tracks in the required format based on the provided search string
 export async function searchAPI(searchString: string) {
     try {
-        const url = `https://api.spotify.com/v1/search?q=${searchString}&type=track&limit=50`;
+        const url = `https://api.spotify.com/v1/search?q=${searchString}&type=track&limit=10`;
         return await reworkData(await getPage(url));
     } catch (error) {
         console.error(error);
