@@ -18,6 +18,7 @@ export function durationToText(duration_ms: number) {
 // Fetches a single track and transforms it into a convenient format
 export async function getTrack(searchString: string): Promise<Track | undefined> {
     const token = localStorage.getItem(TOKEN); // Token required for the request
+    console.log(searchString);
 
     const options = {
         method: "GET",
