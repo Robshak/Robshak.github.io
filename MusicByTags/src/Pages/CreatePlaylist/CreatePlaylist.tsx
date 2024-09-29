@@ -16,7 +16,7 @@ function CreatePlaylist() {
 
     // go to page "search"
     const changePage = () => {
-        naviaget("/");
+        naviaget("/search");
     };
 
     // update function for drag-and-drop

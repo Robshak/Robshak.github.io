@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import TotalSearch from "./Pages/TotalSearch/TotalSearch";
@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./Store/store";
 import Player from "./Layout/Player/Player";
 import { ContextMenuProvider } from "./Components/Context/Contextmenu/Contextmenu.provider";
+import SpotifyAuthComponent from "./Pages/SpotifyAuth/SpotifyAuth";
 
 // Create router
 const router = createBrowserRouter([
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        element: <SpotifyAuthComponent></SpotifyAuthComponent>
+      },
+      {
+        path: "/search",
         element: <TotalSearch></TotalSearch>
       },
       {
@@ -27,12 +32,14 @@ const router = createBrowserRouter([
   }
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const container = document.getElementById("root");
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ContextMenuProvider>
         <RouterProvider router={router}></RouterProvider>
       </ContextMenuProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  container
 );

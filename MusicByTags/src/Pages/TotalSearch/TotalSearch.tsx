@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../Store/store";
 import { useEffect, useRef, useState } from "react";
 import TrackList from "../../Components/Tracks/TrackList/TrackList";
-import { getTOKEN } from "../../workWithAPI/getTOKEN";
 import { Track } from "../../interfaces/Track.interface";
 import { AxiosError } from "axios";
 import { searchAPI } from "../../workWithAPI/searchAPI";
@@ -20,8 +19,6 @@ function TotalSearch() {
     const [delayedQuery, setDelayedQuery] = useState("");
     const timerIdRef = useRef<number | null>(null);
     const { searchtList, currentList } = useSelector((s: RootState) => s.player);
-
-    getTOKEN();
 
     // go to page "create playlist"
     const changePage = () => {
