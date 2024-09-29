@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const clientId = "342af3e686ee41a9ae548be73e9b4f74";
 const secret = "b47aec4e0e704aa98d2cf8044a075b15";
-const scopes = "user-read-private user-read-email";
+const scopes = "user-library-read user-read-private user-read-email playlist-read-collaborative";
 
 const getAuthUrl = (currentUrl: string) => {
     const spotifyAuthUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(currentUrl)}`;
@@ -14,6 +14,7 @@ const getAuthUrl = (currentUrl: string) => {
 
 const SpotifyAuthComponent = () => {
   const [currentUrl] = useState<string>("https://silver-bonbon-26555e.netlify.app/");
+//   const [currentUrl] = useState<string>("http://localhost:5173/");
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const naviaget = useNavigate();
 
