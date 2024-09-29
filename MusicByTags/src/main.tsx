@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import TotalSearch from "./Pages/TotalSearch/TotalSearch";
@@ -32,12 +32,14 @@ const router = createBrowserRouter([
   }
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const container = document.getElementById("root");
+ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ContextMenuProvider>
         <RouterProvider router={router}></RouterProvider>
       </ContextMenuProvider>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
+  container
 );
